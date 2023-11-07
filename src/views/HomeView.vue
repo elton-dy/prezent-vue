@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import apiClient from "../services/api"; // Make sure to import your configured axios instance
+import apiClient from "../services/api";
 
 export default {
   name: 'HomePage',
