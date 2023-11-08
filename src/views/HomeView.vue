@@ -4,6 +4,7 @@
     <div class="chat-wrapper">
       <chat-component :messages="conversation.messages"></chat-component>
     </div>
+    <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
   </div>
 </template>
 
@@ -11,10 +12,11 @@
 import apiClient from "../services/api";
 import ChatComponent from "../components/ChatComponent.vue";
 import {onMounted,onBeforeMount, ref} from "vue";
+import MessageInputComponent from "../components/MessageInputComponent.vue";
 
 export default {
   name: 'HomePage',
-  components: {ChatComponent},
+  components: {MessageInputComponent, ChatComponent},
   data() {
     return {
       // other data properties if needed
@@ -25,6 +27,39 @@ export default {
       id: null,
       messages: [],
     });
+    async function handleNewUserMessage(newMessage) {
+      console.log('ici');
+      // Ajouter le nouveau message de l'utilisateur à la conversation
+      conversation.value.messages.push({
+        text: newMessage,
+        type: 'Human',
+        timestamp: new Date().toISOString(),
+        // autres propriétés si nécessaire
+      });
+      const messageData = {
+        conversation: conversation.value.id,
+        text: newMessage,
+        type: 'Human'
+      };
+      // Envoyer le nouveau message à l'API et attendre la réponse
+      try {
+        const response = await apiClient.post('/messages/', messageData);
+        // Mettre à jour la conversation avec la réponse de l'API
+
+        if (response && response.data) {
+          console.log(response)
+          conversation.value.messages.push({
+            text: response.data['ai_response'],
+            type: 'AI',
+            timestamp: response.data.timestamp,
+          });
+        }
+        // Mettre à jour le stockage local
+        localStorage.setItem('conversation', JSON.stringify(conversation.value));
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    }
 
     // Function to load or start a new conversation
     async function loadOrCreateConversation() {
@@ -52,6 +87,7 @@ export default {
     onMounted(loadOrCreateConversation);
     return {
       conversation,
+      handleNewUserMessage,
     };
   },
   created() {
