@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <h1>Welcome to the Home Page</h1>
-    <div class="chat-wrapper">
+  <div class="w-full flex flex-col items-center ">
+    <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
+    <div class="chat-wrapper max-w-screen-md">
       <chat-component :messages="conversation.messages"></chat-component>
     </div>
-    <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+    <div>
+      <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+    </div>
   </div>
 </template>
 
@@ -50,12 +52,12 @@ export default {
           console.log(response)
           conversation.value.messages.push({
             text: response.data['ai_response'],
-            type: 'AI',
+            type: response.data['type'],
             timestamp: response.data.timestamp,
           });
         }
         // Mettre à jour le stockage local
-        localStorage.setItem('conversation', JSON.stringify(conversation.value));
+        sessionStorage.setItem('conversation', JSON.stringify(conversation.value));
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -63,20 +65,20 @@ export default {
 
     // Function to load or start a new conversation
     async function loadOrCreateConversation() {
-      let storedConversation = localStorage.getItem('conversation');
+      let storedConversation = sessionStorage.getItem('conversation');
       if (storedConversation) {
         conversation.value = JSON.parse(storedConversation);
       } else {
         try {
           const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
           const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid });
-          // const r = await apiClient.get('/conversations/'+response.data.id);
-          const r = await apiClient.get('/conversations/1');
+          const r = await apiClient.get('/conversations/'+response.data.id);
+          // const r = await apiClient.get('/conversations/1');
           conversation.value = {
             ...r.data,
           };
 
-          localStorage.setItem('conversation', JSON.stringify(conversation.value));
+          sessionStorage.setItem('conversation', JSON.stringify(conversation.value));
         } catch (error) {
           console.error('Error starting a new conversation:', error);
         }

@@ -200,7 +200,7 @@ function toggleSecondColumn() {
 }
 // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
 function checkScreenWidth() {
-  if (window.innerWidth < 768) { // 768px est généralement considéré comme la largeur d'écran pour les appareils mobiles
+  if (window.innerWidth < 768) {
     isSecondColumnVisible.value = false;
   }
 }
@@ -235,5 +235,9 @@ onUnmounted(() => {
 .slide-enter-from, .slide-leave-to {
   width: 0;
   overflow: hidden;
+}
+
+.border-colors-gradient {
+  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1;
 }
 </style>

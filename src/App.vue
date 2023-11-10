@@ -4,20 +4,17 @@ import SidebarsComponent from "./components/SidebarsComponent.vue";
 </script>
 
 <template>
-  <div class="app-container">
+  <div class="w-full flex">
     <header>
       <SidebarsComponent></SidebarsComponent>
     </header>
-    <main>
+    <main class="w-full">
       <RouterView />
     </main>
   </div>
 </template>
 
 <style scoped>
-.app-container {
-  display: flex;
-}
 
 header {
   /* styles pour le header */
