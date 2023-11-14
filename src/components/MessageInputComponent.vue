@@ -5,14 +5,14 @@
     <textarea
         id="chat-input"
         v-model="userMessage"
-        class="block w-full resize-none rounded-xl border-none bg-slate-200 p-4 pr-16 text-sm text-slate-900 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
-        placeholder="Enter your prompt"
+        class="block w-full resize-none rounded-xl border-none bg-slate-50 p-4 pr-16 text-sm text-slate-900 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
+        placeholder="Saisissez votre prompt"
         rows="1"
         required
     ></textarea>
       <button
           type="submit"
-          class="absolute bottom-2 right-2.5 rounded-lg bg-blue-700 p-2 text-sm font-medium text-slate-200 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
+          class="absolute bottom-2 right-2.5 rounded-lg bg-royal-purple/80 p-2 text-sm font-medium text-slate-200 hover:bg-royal-purple focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
       >
         <svg
             xmlns="http://www.w3.org/2000/svg"

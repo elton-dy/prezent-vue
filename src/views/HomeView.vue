@@ -1,11 +1,16 @@
 <template>
-  <div class="w-full flex flex-col items-center ">
-    <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
-    <div class="chat-wrapper max-w-screen-md">
-      <chat-component :messages="conversation.messages"></chat-component>
-    </div>
-    <div>
-      <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+  <div class="relative h-screen w-full">
+    <div class="relative chat-wrapper flex h-screen flex-col">
+      <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
+
+      <div class="flex-1 overflow-y-scroll max-w-screen-md mr-auto ml-auto">
+        <chat-component :messages="conversation.messages"></chat-component>
+      </div>
+      <div class="bg-slate-300 flex items-center justify-center">
+        <div class="w-full max-w-screen-md">
+          <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+        </div>
+      </div>
     </div>
   </div>
 </template>
