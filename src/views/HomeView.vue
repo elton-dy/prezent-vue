@@ -57,6 +57,7 @@ export default {
           console.log(response)
           conversation.value.messages.push({
             text: response.data['ai_response'],
+            product_details: response.data['product_details'],
             type: response.data['type'],
             timestamp: response.data.timestamp,
           });

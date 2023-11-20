@@ -20,7 +20,18 @@
         ]"
           class=""
       >
-        <p>{{message.text}}</p>
+        <!-- Afficher le message normalement -->
+        <p v-if="!message.product_details">{{message.text}}</p>
+
+        <!-- Afficher la carte du produit si les détails du produit sont disponibles -->
+        <div v-else class="product-card " @click="openProductLink(message.product_details.link)">
+          <img src="https://www.leparisien.fr/resizer/zzHBFj04fm1uJSz4XYZR0WJwIIk=/932x582/cloudfront-eu-central-1.images.arcpublishing.com/lpguideshopping/QNJ77JCHAFCUHPTGB6ZC7Z5LA4.jpg">
+          <h3>{{ message.product_details.name }}</h3>
+          <p>{{ message.product_details.description }}</p>
+          <a :href="message.product_details.link" target="_blank">Acheter maintenant</a>
+          <!-- Ajoutez ici d'autres informations du produit si nécessaire -->
+        </div>
+
       </div>
     </div>
   </div>
@@ -39,22 +50,13 @@ export default {
     const userAvatar = 'https://dummyimage.com/128x128/354ea1/ffffff&text=U'; // User avatar URL
     const aiAvatar = 'https://dummyimage.com/128x128/363536/ffffff&text=A'; // AI avatar URL
 
-    // Load conversation history
-    // function loadHistory() {
-    // // Example: Load history from local storage or another source
-    //   const history = localStorage.getItem('chatHistory');
-    //   if (history) {
-    //     let messages;
-    //     messages.value = JSON.parse(history);
-    //   }
-    // }
+    function openProductLink(link) {
+      if (link) {
+        window.open(link, '_blank');
+      }
+    }
 
-    // Call loadHistory on component mount
-    // loadHistory();
-
-    // Return reactive variables and functions
-    // let messages;
-    return { userAvatar, aiAvatar };
+    return { userAvatar, aiAvatar,openProductLink };
 
   }
 };
