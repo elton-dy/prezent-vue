@@ -101,6 +101,7 @@ export default {
     return {
       conversation,
       handleNewUserMessage,
+      isLoading
     };
   },
   created() {

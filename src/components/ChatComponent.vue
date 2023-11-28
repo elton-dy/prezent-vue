@@ -5,6 +5,7 @@
     <div
         v-for="(message, index) in messages"
         :key="index"
+        :ref="setLastMessageRef(index)"
         :class="message.type === 'Human' ? 'flex-row-reverse' : 'flex'"
         class="flex items-start"
     >
@@ -67,22 +68,45 @@
 </template>
 
 <script>
-import {ref, onMounted, onUnmounted,watch} from 'vue';
+import {ref, onMounted, onUnmounted,onUpdated,nextTick} from 'vue';
 export default {
   name: 'ChatComponent',
   props: {
-    messages: null,
+    messages: {
+      type: Array,
+      default: () => []
+    },
     isLoading: Boolean
   },
 
   setup(props) {
-    watch(
-        () => props.isLoading,
-        (newValue, oldValue) => {
-          console.log(`isLoading changed from ${oldValue} to ${newValue}`);
-        }
-    );
+    const lastMessageRef = ref(null);
 
+    function setLastMessageRef(index) {
+      return (el) => {
+        if (index === props.messages.length - 1) {
+          lastMessageRef.value = el;
+        }
+      };
+    }
+
+    function scrollToLastMessage() {
+      setTimeout(() => {
+        if (lastMessageRef.value) {
+          lastMessageRef.value.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 200);
+    }
+
+    onMounted(async () => {
+      await nextTick();
+      console.log("onUpdated - lastMessageRef:", lastMessageRef.value);
+      scrollToLastMessage();
+    });
+
+    onUpdated(() => {
+      scrollToLastMessage();
+    });
     const userAvatar = 'https://dummyimage.com/128x128/354ea1/ffffff&text=U'; // User avatar URL
     const aiAvatar = 'https://dummyimage.com/128x128/363536/ffffff&text=A'; // AI avatar URL
 
@@ -92,9 +116,9 @@ export default {
       }
     }
 
-    return { userAvatar, aiAvatar,openProductLink };
+    return { userAvatar, aiAvatar,openProductLink,setLastMessageRef};
+  },
 
-  }
 };
 </script>
 
@@ -111,6 +135,7 @@ export default {
 
 .loading-dots{
   display: flex;
+  margin-top: 8px;
 }
 
 @keyframes bounce {
@@ -118,12 +143,12 @@ export default {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-15px);
+    transform: translateY(-10px);
   }
 }
 
 .dot {
-  @apply h-3 w-3 bg-black rounded-full;
+  @apply h-2 w-2 bg-black rounded-full;
   animation: bounce 0.7s infinite;
   /* autres styles */
 }
