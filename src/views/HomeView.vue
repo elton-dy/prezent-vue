@@ -6,7 +6,7 @@
       </div>
 
       <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full">
-        <chat-component :messages="conversation.messages"></chat-component>
+        <chat-component :messages="conversation.messages" :is-loading="isLoading"></chat-component>
       </div>
       <div class="bg-slate-300 flex items-center justify-center">
         <div class="w-full max-w-screen-md">
@@ -36,8 +36,9 @@ export default {
       id: null,
       messages: [],
     });
+    const isLoading = ref(false);
     async function handleNewUserMessage(newMessage) {
-      console.log('ici');
+      isLoading.value = true;
       // Ajouter le nouveau message de l'utilisateur à la conversation
       conversation.value.messages.push({
         text: newMessage,
@@ -56,7 +57,7 @@ export default {
         // Mettre à jour la conversation avec la réponse de l'API
 
         if (response && response.data) {
-          console.log(response)
+          // console.log(response)
           conversation.value.messages.push({
             text: response.data['ai_response'],
             product_details: response.data['product_details'],
@@ -66,8 +67,10 @@ export default {
         }
         // Mettre à jour le stockage local
         sessionStorage.setItem('conversation', JSON.stringify(conversation.value));
+        isLoading.value = false;
       } catch (error) {
         console.error('Error sending message:', error);
+        isLoading.value = false;
       }
     }
 
@@ -91,7 +94,7 @@ export default {
           console.error('Error starting a new conversation:', error);
         }
       }
-      console.log(conversation.value);
+      // console.log(conversation.value);
     }
 
     onMounted(loadOrCreateConversation);

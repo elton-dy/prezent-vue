@@ -25,7 +25,7 @@
 
         <!-- Afficher la carte du produit si les détails du produit sont disponibles -->
 
-        <div v-else class="product-card-container">
+        <div v-else class="product-card-container ">
           <p>{{message.text}}</p>
           <div class="product-card w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
             <div class="product-card-img-container flex">
@@ -49,19 +49,40 @@
 
       </div>
     </div>
+
+    <div v-if="isLoading" class="flex items-start">
+      <img
+          :src="aiAvatar"
+          class="mr-2 h-8 w-8 rounded-full"
+      />
+      <div class="flex rounded-b-xl rounded-tr-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl">
+        <div  class="loading-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {ref, onMounted, onUnmounted} from 'vue';
+import {ref, onMounted, onUnmounted,watch} from 'vue';
 export default {
   name: 'ChatComponent',
   props: {
     messages: null,
+    isLoading: Boolean
   },
 
-  setup() {
-    // console.log(props.messages)
+  setup(props) {
+    watch(
+        () => props.isLoading,
+        (newValue, oldValue) => {
+          console.log(`isLoading changed from ${oldValue} to ${newValue}`);
+        }
+    );
+
     const userAvatar = 'https://dummyimage.com/128x128/354ea1/ffffff&text=U'; // User avatar URL
     const aiAvatar = 'https://dummyimage.com/128x128/363536/ffffff&text=A'; // AI avatar URL
 
@@ -86,5 +107,32 @@ export default {
 
 .product-card{
   cursor: pointer;
+}
+
+.loading-dots{
+  display: flex;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.dot {
+  @apply h-3 w-3 bg-black rounded-full;
+  animation: bounce 0.7s infinite;
+  /* autres styles */
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 </style>
