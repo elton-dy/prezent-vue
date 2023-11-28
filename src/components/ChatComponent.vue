@@ -21,25 +21,25 @@
           class=""
       >
         <!-- Afficher le message normalement -->
-        <p v-if="!message.product_details">{{message.text}}</p>
+        <p v-if="!message.product_details || message.product_details.length === 0">{{message.text}}</p>
 
         <!-- Afficher la carte du produit si les détails du produit sont disponibles -->
 
         <div v-else class="product-card-container">
           <p>{{message.text}}</p>
-          <div class="product-card w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden">
+          <div class="product-card w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
             <div class="product-card-img-container flex">
-              <img v-if="!message.product_details.image_url" class="product-card-img " src="https://www.leparisien.fr/resizer/zzHBFj04fm1uJSz4XYZR0WJwIIk=/932x582/cloudfront-eu-central-1.images.arcpublishing.com/lpguideshopping/QNJ77JCHAFCUHPTGB6ZC7Z5LA4.jpg">
-              <img v-else class="product-card-img " :src="message.product_details.image_url">
+              <img v-if="!product.image_url" class="product-card-img " src="https://positiveprints.com/wp-content/smush-webp/2023/09/Carte-Lieu-de-Rencontre-1024x1024.jpg.webp">
+              <img v-else class="product-card-img " :src="product.image_url">
             </div>
             <div class="flex flex-col items-center">
-              <h3>{{ message.product_details.name }}</h3>
-              <p>{{ message.product_details.target_budget }}</p>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.target_budget }}</p>
               <button
-                  @click="openProductLink(message.product_details.link)"
+                  @click="openProductLink(product.link)"
                   class="inline-flex items-center gap-x-2 rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300"
               >
-                <a :href="message.product_details.link" target="_blank">Acheter</a>
+                <a :href="product.link" target="_blank">Acheter</a>
               </button>
 
             </div>
@@ -82,5 +82,9 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.product-card{
+  cursor: pointer;
 }
 </style>

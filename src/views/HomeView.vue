@@ -1,9 +1,11 @@
 <template>
   <div class="relative h-screen w-full">
     <div class="relative chat-wrapper flex h-screen flex-col">
-      <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
+      <div class="flex items-center justify-center h-20">
+        <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
+      </div>
 
-      <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto">
+      <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full">
         <chat-component :messages="conversation.messages"></chat-component>
       </div>
       <div class="bg-slate-300 flex items-center justify-center">
