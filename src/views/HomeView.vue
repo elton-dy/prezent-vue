@@ -1,12 +1,17 @@
 <template>
-  <div class="relative h-screen w-full">
+  <div class="relative h-screen w-full home-main">
     <div class="relative chat-wrapper flex h-screen flex-col">
       <div class="flex items-center justify-center h-20">
-        <h1 class="max-w-screen-md">Welcome to the Home Page</h1>
+<!--        <h1 class="max-w-screen-md"> <img src="../assets/home-gif.gif"></h1>-->
       </div>
 
-      <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full">
-        <chat-component :messages="conversation.messages" :is-loading="isLoading"></chat-component>
+      <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full"       id="style-3">
+        <chat-component
+          v-if="currentConversation"
+          :messages="currentConversation.messages"
+          :is-loading="isLoading">
+        >
+        </chat-component>
       </div>
       <div class="bg-slate-300 flex items-center justify-center">
         <div class="w-full max-w-screen-md">
@@ -20,8 +25,9 @@
 <script>
 import apiClient from "../services/api";
 import ChatComponent from "../components/ChatComponent.vue";
-import {onMounted,onBeforeMount, ref} from "vue";
+import {onMounted,onBeforeMount, ref,watch} from "vue";
 import MessageInputComponent from "../components/MessageInputComponent.vue";
+import {addConversation, conversations, getConversationById} from "../stores/conversationsStore";
 
 export default {
   name: 'HomePage',
@@ -31,26 +37,30 @@ export default {
       // other data properties if needed
     };
   },
+
   setup() {
-    const conversation = ref({
-      id: null,
-      messages: [],
-    });
     const isLoading = ref(false);
+    const currentConversationId = ref(null);
+    const currentConversation = ref(null);
     async function handleNewUserMessage(newMessage) {
       isLoading.value = true;
-      // Ajouter le nouveau message de l'utilisateur à la conversation
-      conversation.value.messages.push({
+      // Préparer le message de l'utilisateur
+      const userMessage = {
         text: newMessage,
         type: 'Human',
         timestamp: new Date().toISOString(),
-        // autres propriétés si nécessaire
-      });
+      };
+
+      if (currentConversation.value) {
+        currentConversation.value.messages.push(userMessage);
+      }
+
       const messageData = {
-        conversation: conversation.value.id,
+        conversation: currentConversation.value.id,
         text: newMessage,
         type: 'Human'
       };
+      console.log("messageData:", currentConversation);
       // Envoyer le nouveau message à l'API et attendre la réponse
       try {
         const response = await apiClient.post('/messages/', messageData);
@@ -58,7 +68,7 @@ export default {
 
         if (response && response.data) {
           // console.log(response)
-          conversation.value.messages.push({
+          currentConversation.value.messages.push({
             text: response.data['ai_response'],
             product_details: response.data['product_details'],
             type: response.data['type'],
@@ -66,7 +76,7 @@ export default {
           });
         }
         // Mettre à jour le stockage local
-        sessionStorage.setItem('conversation', JSON.stringify(conversation.value));
+        sessionStorage.setItem('conversation', JSON.stringify(currentConversation.value));
         isLoading.value = false;
       } catch (error) {
         console.error('Error sending message:', error);
@@ -78,30 +88,47 @@ export default {
     async function loadOrCreateConversation() {
       let storedConversation = sessionStorage.getItem('conversation');
       if (storedConversation) {
-        conversation.value = JSON.parse(storedConversation);
+        const conversationData = JSON.parse(storedConversation);
+        currentConversationId.value = conversationData.id;
+        currentConversation.value = conversationData;
+        addConversation(conversationData);
       } else {
         try {
           const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
           const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid });
-          const r = await apiClient.get('/conversations/'+response.data.id);
-          // const r = await apiClient.get('/conversations/1');
-          conversation.value = {
-            ...r.data,
-          };
+          const newConversation = response.data;
 
-          sessionStorage.setItem('conversation', JSON.stringify(conversation.value));
+          addConversation(newConversation); // Mise à jour du store global
+          currentConversationId.value = newConversation.id;
+          currentConversation.value = newConversation;
+          sessionStorage.setItem('conversation', JSON.stringify(newConversation));
         } catch (error) {
           console.error('Error starting a new conversation:', error);
         }
       }
-      // console.log(conversation.value);
+
+      // Mise à jour de currentConversation basée sur currentConversationId
+      currentConversation.value = getConversationById(currentConversationId.value);
     }
 
-    onMounted(loadOrCreateConversation);
+    onMounted(() => {
+      loadOrCreateConversation();
+      console.log("Store Conversations:", conversations.value);
+      console.log("Current Conversation ID:", currentConversationId.value);
+      console.log("Current Conversation:", getConversationById(currentConversationId.value));
+    });
+    watch(() => conversations.value, (newConversations) => {
+      // Logique pour déterminer quelle conversation doit être affichée
+      // Par exemple, sélectionner la dernière conversation ajoutée ou une spécifique
+      const lastConversation = newConversations[newConversations.length - 1];
+      currentConversationId.value = lastConversation.id;
+      currentConversation.value = lastConversation;
+    }, { deep: true });
+
     return {
-      conversation,
       handleNewUserMessage,
-      isLoading
+      isLoading,
+      currentConversation
     };
   },
   created() {
@@ -134,3 +161,33 @@ export default {
   }
 };
 </script>
+
+<style>
+
+
+
+#style-3::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+#style-3::-webkit-scrollbar
+{
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+  left bottom,
+  left top,
+  color-stop(0.44, rgb(122,153,217)),
+  color-stop(0.72, rgb(73,125,189)),
+  color-stop(0.86, rgb(28,58,148)));
+}
+
+</style>

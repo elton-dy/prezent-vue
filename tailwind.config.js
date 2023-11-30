@@ -11,6 +11,9 @@ module.exports = {
         'royal-purple': '#5E17EB',
         'flame-orange': '#FF6E40',
         'pale-gray': '#D4D4D4',
+        'soft-ivory': '#FFF8E1',
+        'soft-green': '#A8D5BA',
+        'mustard-yellow': '#FFC857'
       },
 
     },

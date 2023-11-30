@@ -5,6 +5,8 @@
     <textarea
         id="chat-input"
         v-model="userMessage"
+        @input="autoGrow"
+        @keydown.enter.prevent="handleSendMessageOnEnter"
         class="block w-full resize-none rounded-xl border-none bg-slate-50 p-4 pr-16 text-sm text-slate-900 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
         placeholder="Saisissez votre prompt"
         rows="1"
@@ -53,11 +55,30 @@ export default {
         userMessage.value = '';
       }
     }
-
+    function autoGrow(event) {
+      event.target.style.height = 'auto'; // Réinitialiser la hauteur
+      event.target.style.height = event.target.scrollHeight + 'px'; // Ajuster en fonction du contenu
+    }
+    // Méthode pour gérer l'envoi du message avec la touche Entrée
+    function handleSendMessageOnEnter(event) {
+      //  sauts de ligne dans le textarea
+      if (!event.shiftKey) {
+        handleSendMessage();
+      }
+    }
     return {
       userMessage,
       handleSendMessage,
+      handleSendMessageOnEnter,
+      autoGrow
     };
   },
 }
 </script>
+
+<style>
+textarea {
+  max-height: 150px;
+  overflow-y: auto;
+}
+</style>

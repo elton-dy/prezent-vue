@@ -11,7 +11,8 @@
     >
       <img
           :src="message.type === 'Human' ? userAvatar : aiAvatar"
-          class="mr-2 h-8 w-8 rounded-full"
+          :class="message.type === 'Human' ? 'ml-2 h-8 w-8 rounded-full' : 'mr-2 h-8 w-8 rounded-full'"
+          class=""
           :alt="message.type"
       />
       <div
@@ -38,7 +39,7 @@
               <p>{{ product.target_budget }}</p>
               <button
                   @click="openProductLink(product.link)"
-                  class="inline-flex items-center gap-x-2 rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300"
+                  class="inline-flex items-center gap-x-2 rounded-lg bg-mustard-yellow px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300"
               >
                 <a :href="product.link" target="_blank">Acheter</a>
               </button>

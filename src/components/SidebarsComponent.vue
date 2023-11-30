@@ -137,16 +137,28 @@
             </form>
 
             <button
-                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800"
+                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-mustard-yellow transition-colors duration-200 hover:bg-mustard-yellow focus:outline-none dark:hover:bg-slate-800"
+                @click="showNewMessageForm = !showNewMessageForm"
             >
-              <h1
-                  class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
-              >
-                Tailwind Classes
-              </h1>
-              <p class="text-xs text-slate-500 dark:text-slate-400">12 Mar</p>
-            </button>
+              <div>
+                <h1
+                    class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+                >
+                  Nouveau message
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">+</p>
+              </div>
 
+            </button>
+            <transition name="slide-fade">
+
+              <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-royal-purple">
+                <form @submit.prevent="createNewConversation(newConversationName)">
+                  <input v-model="newConversationName" type="text" placeholder="Nom de la conversation" class="border p-2 rounded w-full"/>
+                  <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Créer</button>
+                </form>
+              </div>
+            </transition>
             <button
                 class="flex w-full flex-col gap-y-2 rounded-lg bg-slate-200 px-3 py-2 text-left transition-colors duration-200 focus:outline-none dark:bg-slate-800"
             >
@@ -184,38 +196,112 @@
   </nav>
 </template>
 
-<script setup>
+<script>
 import {ref, onMounted, onUnmounted} from 'vue';
 import { RouterLink } from "vue-router";
+import apiClient from "../services/api";
+import { conversations, addConversation } from "../stores/conversationsStore";
 
-const selectedItem = ref(null);
-const isSecondColumnVisible = ref(true);
+export default {
+  name: 'SidebarsComponent',
+  components: {
+    RouterLink
+  },
+  setup(){
+    const selectedItem = ref(null);
+    const isSecondColumnVisible = ref(true);
 
-function selectItem(item) {
-  selectedItem.value = item === selectedItem.value ? null : item; // Désélectionne l'item si cliqué à nouveau
-}
+    const showNewMessageForm = ref(false);
+    const newConversationName = ref('');
 
-function toggleSecondColumn() {
-  isSecondColumnVisible.value = !isSecondColumnVisible.value;
-}
-// Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
-function checkScreenWidth() {
-  if (window.innerWidth < 768) {
-    isSecondColumnVisible.value = false;
+    function addNewConversation() {
+      // Logique pour ajouter une nouvelle conversation
+      showNewMessageForm.value = false;
+    }
+    function selectItem(item) {
+      selectedItem.value = item === selectedItem.value ? null : item; // Désélectionne l'item si cliqué à nouveau
+    }
+
+    function toggleSecondColumn() {
+      isSecondColumnVisible.value = !isSecondColumnVisible.value;
+    }
+    // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
+    function checkScreenWidth() {
+      if (window.innerWidth < 768) {
+        isSecondColumnVisible.value = false;
+      }
+    }
+
+
+
+    onMounted(() => {
+      // Vérifie la largeur de l'écran lors du montage du composant
+      checkScreenWidth();
+      // Ajouter un écouteur d'événements pour les changements de taille de l'écran
+      window.addEventListener('resize', checkScreenWidth);
+    });
+
+    // S'assurer de nettoyer l'écouteur lors de la destruction du composant
+    onUnmounted(() => {
+      window.removeEventListener('resize', checkScreenWidth);
+    });
+    async function createNewConversation(conversationName) {
+      try {
+        let userId;
+        let visitorUuid
+        let response
+        // Vérifier si un utilisateur est connecté
+        if (localStorage.getItem('userInfo')) {
+          // Ici, remplacez 'userInfo' par la clé réelle où les informations de l'utilisateur connecté sont stockées
+          const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+          userId = userInfo.id;
+        } else {
+          // Gérer le cas d'un visiteur
+          const visitorInfo = JSON.parse(localStorage.getItem('visitorInfo'));
+          visitorUuid = visitorInfo.uuid;
+        }
+
+        if (userId){
+          response = await apiClient.post('/conversations/', {
+            user: userId,
+            name: conversationName
+          });
+        }else {
+          response = await apiClient.post('/conversations/', {
+            visitor_uuid: visitorUuid,
+            name: conversationName
+          });
+        }
+
+        let newConversation = {};
+        newConversation.value = {
+          ...response.data,
+        };
+
+        sessionStorage.setItem('conversation', JSON.stringify(newConversation.value));
+        addConversation(newConversation);
+        showNewMessageForm.value = false;
+      } catch (error) {
+        console.error('Error creating a new conversation:', error);
+      }
+    }
+
+
+    return {
+      selectedItem,
+      isSecondColumnVisible,
+      showNewMessageForm,
+      newConversationName,
+      selectItem,
+      toggleSecondColumn,
+      addNewConversation,
+      checkScreenWidth,
+      createNewConversation
+    }
   }
+
 }
 
-onMounted(() => {
-  // Vérifie la largeur de l'écran lors du montage du composant
-  checkScreenWidth();
-  // Ajouter un écouteur d'événements pour les changements de taille de l'écran
-  window.addEventListener('resize', checkScreenWidth);
-});
-
-// S'assurer de nettoyer l'écouteur lors de la destruction du composant
-onUnmounted(() => {
-  window.removeEventListener('resize', checkScreenWidth);
-});
 </script>
 
 <style>
@@ -239,5 +325,19 @@ onUnmounted(() => {
 
 .border-colors-gradient {
   border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
 }
 </style>
