@@ -8,7 +8,7 @@ import SidebarsComponent from "./components/SidebarsComponent.vue";
     <header>
       <SidebarsComponent></SidebarsComponent>
     </header>
-    <main class="w-full">
+    <main class="relative flex h-screen max-w-full flex-1 flex-col overflow-hidden">
       <RouterView />
     </main>
   </div>
