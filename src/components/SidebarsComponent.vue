@@ -88,7 +88,7 @@
             <h2
                 class="inline px-5 text-lg font-medium text-slate-800 dark:text-slate-200"
             >
-              Chats
+              Discussions
             </h2>
             <span class="rounded-full bg-blue-600 px-2 py-1 text-xs text-slate-200">
           24
@@ -161,34 +161,17 @@
             </transition>
             <button
                 class="flex w-full flex-col gap-y-2 rounded-lg bg-slate-200 px-3 py-2 text-left transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+                v-for="conversation in conversations" :key="conversation.id" @click="selectConversation(conversation.id)"
             >
               <h1
                   class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
               >
-                explain quantum computing
+                {{ conversation.name }}
               </h1>
               <p class="text-xs text-slate-500 dark:text-slate-400">10 Feb</p>
             </button>
-            <button
-                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800"
-            >
-              <h1
-                  class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
-              >
-                How to create ERP Diagram
-              </h1>
-              <p class="text-xs text-slate-500 dark:text-slate-400">22 Jan</p>
-            </button>
-            <button
-                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800"
-            >
-              <h1
-                  class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
-              >
-                API Scaling Strategies
-              </h1>
-              <p class="text-xs text-slate-500 dark:text-slate-400">1 Jan</p>
-            </button>
+
+
           </div>
         </div>
       </transition>
@@ -200,7 +183,7 @@
 import {ref, onMounted, onUnmounted} from 'vue';
 import { RouterLink } from "vue-router";
 import apiClient from "../services/api";
-import { conversations, addConversation } from "../stores/conversationsStore";
+import { conversations, addConversation,setCurrentConversationId } from "../stores/conversationsStore";
 
 export default {
   name: 'SidebarsComponent',
@@ -232,8 +215,6 @@ export default {
       }
     }
 
-
-
     onMounted(() => {
       // Vérifie la largeur de l'écran lors du montage du composant
       checkScreenWidth();
@@ -261,29 +242,22 @@ export default {
           visitorUuid = visitorInfo.uuid;
         }
 
-        if (userId){
-          response = await apiClient.post('/conversations/', {
-            user: userId,
-            name: conversationName
-          });
-        }else {
-          response = await apiClient.post('/conversations/', {
-            visitor_uuid: visitorUuid,
-            name: conversationName
-          });
-        }
+        const payload = userId ? { user: userId, name: conversationName } : { visitor_uuid: visitorUuid, name: conversationName };
+        response = await apiClient.post('/conversations/', payload);
 
         let newConversation = {};
-        newConversation.value = {
+        newConversation = {
           ...response.data,
         };
-
-        sessionStorage.setItem('conversation', JSON.stringify(newConversation.value));
         addConversation(newConversation);
         showNewMessageForm.value = false;
+        setCurrentConversationId(response.data.id);
       } catch (error) {
         console.error('Error creating a new conversation:', error);
       }
+    }
+    function selectConversation(conversationId) {
+      setCurrentConversationId(conversationId);
     }
 
 
@@ -296,7 +270,9 @@ export default {
       toggleSecondColumn,
       addNewConversation,
       checkScreenWidth,
-      createNewConversation
+      createNewConversation,
+      conversations,
+      selectConversation
     }
   }
 

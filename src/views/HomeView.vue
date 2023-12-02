@@ -27,7 +27,7 @@ import apiClient from "../services/api";
 import ChatComponent from "../components/ChatComponent.vue";
 import {onMounted,onBeforeMount, ref,watch} from "vue";
 import MessageInputComponent from "../components/MessageInputComponent.vue";
-import {addConversation, conversations, getConversationById} from "../stores/conversationsStore";
+import {addConversation, conversations, getConversationById,currentConversationId} from "../stores/conversationsStore";
 
 export default {
   name: 'HomePage',
@@ -40,7 +40,6 @@ export default {
 
   setup() {
     const isLoading = ref(false);
-    const currentConversationId = ref(null);
     const currentConversation = ref(null);
     async function handleNewUserMessage(newMessage) {
       isLoading.value = true;
@@ -75,8 +74,6 @@ export default {
             timestamp: response.data.timestamp,
           });
         }
-        // Mettre à jour le stockage local
-        sessionStorage.setItem('conversation', JSON.stringify(currentConversation.value));
         isLoading.value = false;
       } catch (error) {
         console.error('Error sending message:', error);
@@ -86,22 +83,15 @@ export default {
 
     // Function to load or start a new conversation
     async function loadOrCreateConversation() {
-      let storedConversation = sessionStorage.getItem('conversation');
-      if (storedConversation) {
-        const conversationData = JSON.parse(storedConversation);
-        currentConversationId.value = conversationData.id;
-        currentConversation.value = conversationData;
-        addConversation(conversationData);
+
+      if (conversations.value.length > 0) {
+        currentConversationId.value = conversations.value[conversations.value.length - 1].id;
       } else {
         try {
           const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
           const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid });
-          const newConversation = response.data;
-
-          addConversation(newConversation); // Mise à jour du store global
-          currentConversationId.value = newConversation.id;
-          currentConversation.value = newConversation;
-          sessionStorage.setItem('conversation', JSON.stringify(newConversation));
+          addConversation(response.data); // Mise à jour du store global
+          currentConversationId.value = response.data.id;
         } catch (error) {
           console.error('Error starting a new conversation:', error);
         }
@@ -113,17 +103,12 @@ export default {
 
     onMounted(() => {
       loadOrCreateConversation();
-      console.log("Store Conversations:", conversations.value);
-      console.log("Current Conversation ID:", currentConversationId.value);
-      console.log("Current Conversation:", getConversationById(currentConversationId.value));
     });
-    watch(() => conversations.value, (newConversations) => {
-      // Logique pour déterminer quelle conversation doit être affichée
-      // Par exemple, sélectionner la dernière conversation ajoutée ou une spécifique
-      const lastConversation = newConversations[newConversations.length - 1];
-      currentConversationId.value = lastConversation.id;
-      currentConversation.value = lastConversation;
-    }, { deep: true });
+
+    watch(currentConversationId, (newId) => {
+      console.log('watch',newId)
+      currentConversation.value = getConversationById(newId);
+    });
 
     return {
       handleNewUserMessage,
