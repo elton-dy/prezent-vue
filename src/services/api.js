@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://1-prezent.com',
+    baseURL: 'https://1-prezent.com/api',
     withCredentials: false,
     headers: {
         'Accept': 'application/json',
