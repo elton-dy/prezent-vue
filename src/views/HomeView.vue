@@ -42,6 +42,7 @@ export default {
     const isLoading = ref(false);
     const currentConversation = ref(null);
     async function handleNewUserMessage(newMessage) {
+      console.log('004');
       isLoading.value = true;
       // Préparer le message de l'utilisateur
       const userMessage = {
@@ -83,7 +84,6 @@ export default {
 
     // Function to load or start a new conversation
     async function loadOrCreateConversation() {
-
       if (conversations.value.length > 0) {
         currentConversationId.value = conversations.value[conversations.value.length - 1].id;
       } else {
@@ -100,13 +100,27 @@ export default {
       // Mise à jour de currentConversation basée sur currentConversationId
       currentConversation.value = getConversationById(currentConversationId.value);
     }
+    const checkVisitor = async () => {
+      const isConnected = !!localStorage.getItem('accessToken');
+      if (!isConnected && !localStorage.getItem('visitorInfo')) {
+        await createVisitor();
+      }
+    };
 
-    onMounted(() => {
-      loadOrCreateConversation();
+    const createVisitor = async () => {
+      try {
+        const response = await apiClient.post('/visitors/');
+        localStorage.setItem('visitorInfo', JSON.stringify(response.data));
+      } catch (error) {
+        console.error('Error creating visitor:', error);
+      }
+    };
+    onMounted(async () => {
+      await checkVisitor();
+      await loadOrCreateConversation();
     });
 
     watch(currentConversationId, (newId) => {
-      console.log('watch',newId)
       currentConversation.value = getConversationById(newId);
     });
 
@@ -116,34 +130,6 @@ export default {
       currentConversation
     };
   },
-  created() {
-    this.checkVisitor();
-  },
-  methods: {
-    checkVisitor() {
-      const isConnected = !!localStorage.getItem('accessToken'); // Check if the user is logged in
-      if (!isConnected) {
-        // Check if visitor information already exists in localStorage
-        if (!localStorage.getItem('visitorInfo')) {
-          // No visitor info available, create a new visitor
-          this.createVisitor();
-        }
-        // If visitorInfo exists in localStorage, do nothing
-      }
-    },
-    createVisitor() {
-      apiClient.post('/visitors/')
-          .then(response => {
-            // Handle the response after creating the visitor
-            // Store the visitor information in localStorage
-            localStorage.setItem('visitorInfo', JSON.stringify(response.data));
-            // Add any other processing if necessary
-          })
-          .catch(error => {
-            console.error('There was an error creating the visitor:', error);
-          });
-    }
-  }
 };
 </script>
 
