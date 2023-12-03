@@ -1,7 +1,8 @@
 import axios from 'axios';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const apiClient = axios.create({
-    baseURL: 'https://1-prezent.com/api',
+    baseURL: apiBaseUrl,
     withCredentials: false,
     headers: {
         'Accept': 'application/json',
