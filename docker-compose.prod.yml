@@ -3,7 +3,7 @@ services:
   client:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     container_name: client
     # En production, le port 80 ou 443 (pour HTTPS) est généralement utilisé.
     # Assurez-vous que le Dockerfile pour le front-end construit les fichiers statiques et les sert via un serveur web comme Nginx.
