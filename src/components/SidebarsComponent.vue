@@ -88,10 +88,10 @@
             <h2
                 class="inline px-5 text-lg font-medium text-slate-800 dark:text-slate-200"
             >
-              Discussions
+              Conversations
             </h2>
             <span class="rounded-full bg-blue-600 px-2 py-1 text-xs text-slate-200">
-          24
+          {{ conversations.length }}
         </span>
           </div>
 
@@ -159,18 +159,25 @@
                 </form>
               </div>
             </transition>
-            <button
-                class="flex w-full flex-col gap-y-2 rounded-lg bg-slate-200 px-3 py-2 text-left transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+            <div
+                class="flex w-full flex-row gap-y-2 rounded-lg bg-slate-200 text-left overflow-hidden transition-colors duration-200 focus:outline-none dark:bg-slate-800"
                 v-for="conversation in conversations" :key="conversation.id" @click="selectConversation(conversation.id)"
             >
-              <h1
-                  class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+              <button class="flex w-full flex-col px-3 py-2">
+                <h1
+                    class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+                >
+                  {{ conversation.name }}
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ formatTimestamp(conversation.timestamp) }}</p>
+              </button>
+              <div
+                  class="bg-red-500 w-14 flex justify-center"
+                  @click.stop="deleteConversation(conversation.id)"
               >
-                {{ conversation.name }}
-              </h1>
-              <p class="text-xs text-slate-500 dark:text-slate-400">10 Feb</p>
-            </button>
-
+                <img src="../assets/delete.svg" class="max-w-[62%] ">
+              </div>
+            </div>
 
           </div>
         </div>
@@ -183,7 +190,7 @@
 import {ref, onMounted, onUnmounted} from 'vue';
 import { RouterLink } from "vue-router";
 import apiClient from "../services/api";
-import { conversations, addConversation,setCurrentConversationId } from "../stores/conversationsStore";
+import { conversations, addConversation,setCurrentConversationId,removeConversation } from "../stores/conversationsStore";
 
 export default {
   name: 'SidebarsComponent',
@@ -226,6 +233,17 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('resize', checkScreenWidth);
     });
+
+    async function deleteConversation(conversationId) {
+      try {
+        // Supprimer la conversation via l'API
+        await apiClient.delete(`/conversations/${conversationId}`);
+        // Supprimer la conversation du store
+        removeConversation(conversationId);
+      } catch (error) {
+        console.error('Error deleting conversation:', error);
+      }
+    }
     async function createNewConversation(conversationName) {
       try {
         let userId;
@@ -260,6 +278,10 @@ export default {
       setCurrentConversationId(conversationId);
     }
 
+    function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
 
     return {
       selectedItem,
@@ -272,7 +294,9 @@ export default {
       checkScreenWidth,
       createNewConversation,
       conversations,
-      selectConversation
+      selectConversation,
+      formatTimestamp,
+      deleteConversation
     }
   }
 

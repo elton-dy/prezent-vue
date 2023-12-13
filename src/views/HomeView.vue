@@ -89,7 +89,7 @@ export default {
       } else {
         try {
           const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
-          const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid });
+          const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid ,name: 'Bienvenue' });
           addConversation(response.data); // Mise à jour du store global
           currentConversationId.value = response.data.id;
         } catch (error) {

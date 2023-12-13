@@ -39,3 +39,12 @@ export function getConversationById(id) {
     // console.log("getConversationById:", conversations.value);
     return conversations.value.find(conversation => conversation.id === id);
 }
+
+export function removeConversation(conversationId) {
+    const index = conversations.value.findIndex(c => c.id === conversationId);
+    if (index !== -1) {
+        conversations.value.splice(index, 1);
+    }
+    // Mettre à jour sessionStorage
+    sessionStorage.setItem('conversations', JSON.stringify(conversations.value));
+}
