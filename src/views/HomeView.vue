@@ -42,7 +42,7 @@ export default {
     const isLoading = ref(false);
     const currentConversation = ref(null);
     async function handleNewUserMessage(newMessage) {
-      console.log('004');
+
       isLoading.value = true;
       // Préparer le message de l'utilisateur
       const userMessage = {

@@ -3,7 +3,7 @@
     <aside class="flex">
       <!-- First Column -->
       <div
-          class="flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
+          class="first-column flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
       >
         <!-- Logo -->
         <RouterLink
@@ -140,22 +140,22 @@
                 class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-mustard-yellow transition-colors duration-200 hover:bg-mustard-yellow focus:outline-none dark:hover:bg-slate-800"
                 @click="showNewMessageForm = !showNewMessageForm"
             >
-              <div>
+              <div class="flex flx-row justify-between w-full">
                 <h1
                     class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
                 >
-                  Nouveau message
+                  Nouvelle conversation
                 </h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400">+</p>
+                <img src="../assets/add.svg">
               </div>
 
             </button>
             <transition name="slide-fade">
 
-              <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-royal-purple">
+              <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-slate-300">
                 <form @submit.prevent="createNewConversation(newConversationName)">
                   <input v-model="newConversationName" type="text" placeholder="Nom de la conversation" class="border p-2 rounded w-full"/>
-                  <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Créer</button>
+                  <button type="submit" class="bg-blue-600 text-white p-2 rounded w-full">Créer</button>
                 </form>
               </div>
             </transition>
@@ -322,6 +322,14 @@ export default {
   width: 0;
   overflow: hidden;
 }
+
+.first-column{
+  background-image: url("../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
 
 .border-colors-gradient {
   border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1;

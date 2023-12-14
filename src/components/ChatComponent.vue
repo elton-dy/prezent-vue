@@ -35,13 +35,13 @@
               <img v-else class="product-card-img " :src="product.image_url">
             </div>
             <div class="flex flex-col items-center">
-              <h3>{{ product.name }}</h3>
+              <h3 class="italic">{{ product.name }}</h3>
               <p>{{ product.target_budget }}</p>
               <button
                   @click="openProductLink(product.link)"
-                  class="inline-flex items-center gap-x-2 rounded-lg bg-mustard-yellow px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300"
+                  class="inline-flex items-center gap-x-2 rounded-lg bg-flame-orange px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-mustard-yellow focus:outline-none focus:ring focus:ring-blue-300"
               >
-                <a :href="product.link" target="_blank">Acheter</a>
+                <a :href="product.link" target="_blank">Découvrir</a>
               </button>
 
             </div>
@@ -109,7 +109,7 @@ export default {
       scrollToLastMessage();
     });
     const userAvatar = 'https://dummyimage.com/128x128/354ea1/ffffff&text=U'; // User avatar URL
-    const aiAvatar = 'https://dummyimage.com/128x128/363536/ffffff&text=A'; // AI avatar URL
+    const aiAvatar = '../src/assets/logo.png'; // AI avatar URL
 
     function openProductLink(link) {
       if (link) {
