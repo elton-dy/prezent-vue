@@ -14,7 +14,7 @@
     ></textarea>
       <button
           type="submit"
-          class="absolute bottom-2 right-2.5 rounded-lg bg-royal-purple/80 p-2 text-sm font-medium text-slate-200 hover:bg-royal-purple focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
+          class="absolute bottom-2 right-2.5 rounded-full bg-royal-purple/80 p-2 text-sm font-medium text-slate-200 hover:bg-royal-purple focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
       >
         <svg
             xmlns="http://www.w3.org/2000/svg"

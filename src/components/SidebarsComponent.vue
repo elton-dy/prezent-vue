@@ -3,15 +3,15 @@
     <aside class="flex">
       <!-- First Column -->
       <div
-          class="flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
+          class="first-column flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
       >
         <!-- Logo -->
         <RouterLink
             to="/"
             class="mb-1"
-            @click="selectItem('home'), toggleSecondColumn()"
+            @click="toggleSecondColumn()"
         >
-          <img src="../assets/logo.png" class="h-7 w-7 text-blue-600">
+          <img :src="currentImageMenu" class="h-7 w-7 text-blue-600">
         </RouterLink>
         <!-- List Gift -->
         <RouterLink
@@ -27,7 +27,7 @@
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'favori' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
             @click="selectItem('favori')"
         >
-          <img src="../assets/heart.svg" class="h-6 w-6">
+          <img src="../assets/heart.svg" class="menu-icon h-6 w-6">
         </RouterLink>
 
         <!-- User -->
@@ -38,7 +38,7 @@
         >
           <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="menu-icon h-6 w-6"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="currentColor"
@@ -62,7 +62,7 @@
         >
           <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="menu-icon h-6 w-6"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="currentColor"
@@ -88,14 +88,14 @@
             <h2
                 class="inline px-5 text-lg font-medium text-slate-800 dark:text-slate-200"
             >
-              Discussions
+              Conversations
             </h2>
             <span class="rounded-full bg-blue-600 px-2 py-1 text-xs text-slate-200">
-          24
+          {{ conversations.length }}
         </span>
           </div>
 
-          <div class="mx-2 mt-8 space-y-4">
+          <div class="min-w-[160px] mx-2 mt-8 space-y-4">
             <form>
               <label for="chat-input" class="sr-only">Search chats</label>
               <div class="relative">
@@ -140,37 +140,46 @@
                 class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-mustard-yellow transition-colors duration-200 hover:bg-mustard-yellow focus:outline-none dark:hover:bg-slate-800"
                 @click="showNewMessageForm = !showNewMessageForm"
             >
-              <div>
+              <div class="flex flx-row justify-between w-full">
                 <h1
                     class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
                 >
-                  Nouveau message
+                  Nouvelle conversation
                 </h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400">+</p>
+                <img src="../assets/add.svg">
               </div>
 
             </button>
             <transition name="slide-fade">
 
-              <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-royal-purple">
+              <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-slate-300">
                 <form @submit.prevent="createNewConversation(newConversationName)">
                   <input v-model="newConversationName" type="text" placeholder="Nom de la conversation" class="border p-2 rounded w-full"/>
-                  <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Créer</button>
+                  <button type="submit" class="bg-blue-600 text-white p-2 rounded w-full">Créer</button>
                 </form>
               </div>
             </transition>
-            <button
-                class="flex w-full flex-col gap-y-2 rounded-lg bg-slate-200 px-3 py-2 text-left transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+            <div
+                class="flex w-full flex-row gap-y-2 rounded-lg text-left overflow-hidden transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+                :class="{ 'bg-orange-100': selectedConversationId === conversation.id, 'bg-slate-200': selectedConversationId !== conversation.id }"
                 v-for="conversation in conversations" :key="conversation.id" @click="selectConversation(conversation.id)"
             >
-              <h1
-                  class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+              <button class="flex w-full flex-col px-3 py-2">
+                <h1
+                    class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+                >
+                  {{ conversation.name }}
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ formatTimestamp(conversation.timestamp) }}</p>
+              </button>
+              <div
+                  class="bg-red-500 w-14 flex justify-center"
+                  v-if="conversations.length > 1 && selectedConversationId !== conversation.id"
+                  @click.stop="deleteConversation(conversation.id)"
               >
-                {{ conversation.name }}
-              </h1>
-              <p class="text-xs text-slate-500 dark:text-slate-400">10 Feb</p>
-            </button>
-
+                <img src="../assets/delete.svg" class="max-w-[62%] ">
+              </div>
+            </div>
 
           </div>
         </div>
@@ -183,7 +192,7 @@
 import {ref, onMounted, onUnmounted} from 'vue';
 import { RouterLink } from "vue-router";
 import apiClient from "../services/api";
-import { conversations, addConversation,setCurrentConversationId } from "../stores/conversationsStore";
+import { conversations, addConversation,setCurrentConversationId,removeConversation } from "../stores/conversationsStore";
 
 export default {
   name: 'SidebarsComponent',
@@ -196,6 +205,8 @@ export default {
 
     const showNewMessageForm = ref(false);
     const newConversationName = ref('');
+    const currentImageMenu = ref('src/assets/close.svg');
+    const selectedConversationId = ref(null);
 
     function addNewConversation() {
       // Logique pour ajouter une nouvelle conversation
@@ -207,6 +218,7 @@ export default {
 
     function toggleSecondColumn() {
       isSecondColumnVisible.value = !isSecondColumnVisible.value;
+      currentImageMenu.value = isSecondColumnVisible.value ? 'src/assets/close.svg' : 'src/assets/menu.svg';
     }
     // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
     function checkScreenWidth() {
@@ -226,6 +238,17 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('resize', checkScreenWidth);
     });
+
+    async function deleteConversation(conversationId) {
+      try {
+        // Supprimer la conversation via l'API
+        await apiClient.delete(`/conversations/${conversationId}`);
+        // Supprimer la conversation du store
+        removeConversation(conversationId);
+      } catch (error) {
+        console.error('Error deleting conversation:', error);
+      }
+    }
     async function createNewConversation(conversationName) {
       try {
         let userId;
@@ -257,9 +280,14 @@ export default {
       }
     }
     function selectConversation(conversationId) {
+      selectedConversationId.value = conversationId;
       setCurrentConversationId(conversationId);
     }
 
+    function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
 
     return {
       selectedItem,
@@ -272,7 +300,11 @@ export default {
       checkScreenWidth,
       createNewConversation,
       conversations,
-      selectConversation
+      selectConversation,
+      formatTimestamp,
+      deleteConversation,
+      currentImageMenu,
+      selectedConversationId,
     }
   }
 
@@ -298,6 +330,17 @@ export default {
   width: 0;
   overflow: hidden;
 }
+
+.first-column{
+  background-image: url("../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.menu-icon{
+  color: black;
+}
+
 
 .border-colors-gradient {
   border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1;

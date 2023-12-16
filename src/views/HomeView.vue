@@ -1,8 +1,8 @@
 <template>
-  <div class="relative h-screen w-full home-main">
+  <div class="min-w-[300px] relative h-screen w-full home-main">
     <div class="relative chat-wrapper flex h-screen flex-col">
       <div class="flex items-center justify-center h-20">
-<!--        <h1 class="max-w-screen-md"> <img src="../assets/home-gif.gif"></h1>-->
+        <h1 class="max-w-screen-md"> <img src="../assets/baseline.png"></h1>
       </div>
 
       <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full"       id="style-3">
@@ -20,6 +20,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -42,7 +43,7 @@ export default {
     const isLoading = ref(false);
     const currentConversation = ref(null);
     async function handleNewUserMessage(newMessage) {
-      console.log('004');
+
       isLoading.value = true;
       // Préparer le message de l'utilisateur
       const userMessage = {
@@ -89,7 +90,7 @@ export default {
       } else {
         try {
           const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
-          const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid });
+          const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid ,name: 'Bienvenue' });
           addConversation(response.data); // Mise à jour du store global
           currentConversationId.value = response.data.id;
         } catch (error) {
