@@ -89,7 +89,7 @@ export default {
         currentConversationId.value = conversations.value[conversations.value.length - 1].id;
       } else {
         try {
-          const visitorUuid = JSON.parse(localStorage.getItem('visitorInfo')).uuid;
+          const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid;
           const response = await apiClient.post('/conversations/', { visitor_uuid: visitorUuid ,name: 'Bienvenue' });
           addConversation(response.data); // Mise à jour du store global
           currentConversationId.value = response.data.id;
@@ -102,8 +102,8 @@ export default {
       currentConversation.value = getConversationById(currentConversationId.value);
     }
     const checkVisitor = async () => {
-      const isConnected = !!localStorage.getItem('accessToken');
-      if (!isConnected && !localStorage.getItem('visitorInfo')) {
+      const isConnected = !!sessionStorage.getItem('accessToken');
+      if (!isConnected && !sessionStorage.getItem('visitorInfo')) {
         await createVisitor();
       }
     };
@@ -111,7 +111,7 @@ export default {
     const createVisitor = async () => {
       try {
         const response = await apiClient.post('/visitors/');
-        localStorage.setItem('visitorInfo', JSON.stringify(response.data));
+        sessionStorage.setItem('visitorInfo', JSON.stringify(response.data));
       } catch (error) {
         console.error('Error creating visitor:', error);
       }
