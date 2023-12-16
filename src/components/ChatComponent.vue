@@ -109,7 +109,7 @@ export default {
       scrollToLastMessage();
     });
     const userAvatar = 'https://dummyimage.com/128x128/354ea1/ffffff&text=U'; // User avatar URL
-    const aiAvatar = '@/assets/logo.png'; // AI avatar URL
+    const aiAvatar = new URL('@/assets/logo.png', import.meta.url).href; // AI avatar URL
 
     function openProductLink(link) {
       if (link) {
