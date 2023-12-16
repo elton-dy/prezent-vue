@@ -205,7 +205,7 @@ export default {
 
     const showNewMessageForm = ref(false);
     const newConversationName = ref('');
-    const currentImageMenu = ref('src/assets/close.svg');
+    const currentImageMenu = ref('@/assets/close.svg');
     const selectedConversationId = ref(null);
 
     function addNewConversation() {
@@ -218,7 +218,7 @@ export default {
 
     function toggleSecondColumn() {
       isSecondColumnVisible.value = !isSecondColumnVisible.value;
-      currentImageMenu.value = isSecondColumnVisible.value ? 'src/assets/close.svg' : 'src/assets/menu.svg';
+      currentImageMenu.value = isSecondColumnVisible.value ? '@/assets/close.svg' : '@/assets/menu.svg';
     }
     // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
     function checkScreenWidth() {
