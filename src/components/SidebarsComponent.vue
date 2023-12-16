@@ -17,6 +17,7 @@
         <RouterLink
             to="/login"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'gift' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
+            v-if="showIcon"
             @click="selectItem('gift')"
         >
           <img src="../assets/gift.svg" class="h-6 w-6">
@@ -25,6 +26,7 @@
         <RouterLink
             to="#"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'favori' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
+            v-if="showIcon"
             @click="selectItem('favori')"
         >
           <img src="../assets/heart.svg" class="menu-icon h-6 w-6">
@@ -34,6 +36,7 @@
         <RouterLink
             to="#"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'user' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
+            v-if="showIcon"
             @click="selectItem('user')"
         >
           <svg
@@ -58,6 +61,7 @@
         <RouterLink
             to="#"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'parameter' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
+            v-if="showIcon"
             @click="selectItem('parameter')"
         >
           <svg
@@ -202,10 +206,11 @@ export default {
   setup(){
     const selectedItem = ref(null);
     const isSecondColumnVisible = ref(true);
-
+    const showIcon = ref(false);
     const showNewMessageForm = ref(false);
     const newConversationName = ref('');
-    const currentImageMenu = ref('@/assets/close.svg');
+
+    const currentImageMenu = ref(new URL('@/assets/close.svg', import.meta.url).href);
     const selectedConversationId = ref(null);
 
     function addNewConversation() {
@@ -218,7 +223,9 @@ export default {
 
     function toggleSecondColumn() {
       isSecondColumnVisible.value = !isSecondColumnVisible.value;
-      currentImageMenu.value = isSecondColumnVisible.value ? '@/assets/close.svg' : '@/assets/menu.svg';
+      const closeIcon = new URL('@/assets/close.svg', import.meta.url).href;
+      const menuIcon = new URL('@/assets/menu.svg', import.meta.url).href;
+      currentImageMenu.value = isSecondColumnVisible.value ? closeIcon : menuIcon;
     }
     // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
     function checkScreenWidth() {
@@ -305,6 +312,7 @@ export default {
       deleteConversation,
       currentImageMenu,
       selectedConversationId,
+      showIcon
     }
   }
 
