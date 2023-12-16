@@ -9,9 +9,9 @@
         <RouterLink
             to="/"
             class="mb-1"
-            @click="selectItem('home'), toggleSecondColumn()"
+            @click="toggleSecondColumn()"
         >
-          <img src="../assets/logo.png" class="h-7 w-7 text-blue-600">
+          <img :src="currentImageMenu" class="h-7 w-7 text-blue-600">
         </RouterLink>
         <!-- List Gift -->
         <RouterLink
@@ -27,7 +27,7 @@
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'favori' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
             @click="selectItem('favori')"
         >
-          <img src="../assets/heart.svg" class="h-6 w-6">
+          <img src="../assets/heart.svg" class="menu-icon h-6 w-6">
         </RouterLink>
 
         <!-- User -->
@@ -38,7 +38,7 @@
         >
           <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="menu-icon h-6 w-6"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="currentColor"
@@ -62,7 +62,7 @@
         >
           <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="menu-icon h-6 w-6"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="currentColor"
@@ -95,7 +95,7 @@
         </span>
           </div>
 
-          <div class="mx-2 mt-8 space-y-4">
+          <div class="min-w-[160px] mx-2 mt-8 space-y-4">
             <form>
               <label for="chat-input" class="sr-only">Search chats</label>
               <div class="relative">
@@ -160,7 +160,8 @@
               </div>
             </transition>
             <div
-                class="flex w-full flex-row gap-y-2 rounded-lg bg-slate-200 text-left overflow-hidden transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+                class="flex w-full flex-row gap-y-2 rounded-lg text-left overflow-hidden transition-colors duration-200 focus:outline-none dark:bg-slate-800"
+                :class="{ 'bg-orange-100': selectedConversationId === conversation.id, 'bg-slate-200': selectedConversationId !== conversation.id }"
                 v-for="conversation in conversations" :key="conversation.id" @click="selectConversation(conversation.id)"
             >
               <button class="flex w-full flex-col px-3 py-2">
@@ -173,6 +174,7 @@
               </button>
               <div
                   class="bg-red-500 w-14 flex justify-center"
+                  v-if="conversations.length > 1 && selectedConversationId !== conversation.id"
                   @click.stop="deleteConversation(conversation.id)"
               >
                 <img src="../assets/delete.svg" class="max-w-[62%] ">
@@ -203,6 +205,8 @@ export default {
 
     const showNewMessageForm = ref(false);
     const newConversationName = ref('');
+    const currentImageMenu = ref('src/assets/close.svg');
+    const selectedConversationId = ref(null);
 
     function addNewConversation() {
       // Logique pour ajouter une nouvelle conversation
@@ -214,6 +218,7 @@ export default {
 
     function toggleSecondColumn() {
       isSecondColumnVisible.value = !isSecondColumnVisible.value;
+      currentImageMenu.value = isSecondColumnVisible.value ? 'src/assets/close.svg' : 'src/assets/menu.svg';
     }
     // Fonction pour vérifier la largeur de l'écran et cacher la seconde colonne sur mobile
     function checkScreenWidth() {
@@ -275,6 +280,7 @@ export default {
       }
     }
     function selectConversation(conversationId) {
+      selectedConversationId.value = conversationId;
       setCurrentConversationId(conversationId);
     }
 
@@ -296,7 +302,9 @@ export default {
       conversations,
       selectConversation,
       formatTimestamp,
-      deleteConversation
+      deleteConversation,
+      currentImageMenu,
+      selectedConversationId,
     }
   }
 
@@ -329,6 +337,9 @@ export default {
   background-repeat: no-repeat;
 }
 
+.menu-icon{
+  color: black;
+}
 
 
 .border-colors-gradient {

@@ -31,7 +31,7 @@
           <p>{{message.text}}</p>
           <div class="product-card w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
             <div class="product-card-img-container flex">
-              <img v-if="!product.image_url" class="product-card-img " src="https://positiveprints.com/wp-content/smush-webp/2023/09/Carte-Lieu-de-Rencontre-1024x1024.jpg.webp">
+              <img v-if="!product.image_url" class="product-card-img " src="../assets/gift-box.png">
               <img v-else class="product-card-img " :src="product.image_url">
             </div>
             <div class="flex flex-col items-center">
