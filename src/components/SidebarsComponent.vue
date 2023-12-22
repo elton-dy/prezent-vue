@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <aside class="flex">
+    <aside class="flex border-colors-right">
       <!-- First Column -->
       <div
           class="first-column flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
@@ -141,12 +141,12 @@
             </form>
 
             <button
-                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-mustard-yellow transition-colors duration-200 hover:bg-mustard-yellow focus:outline-none dark:hover:bg-slate-800"
+                class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800"
                 @click="showNewMessageForm = !showNewMessageForm"
             >
               <div class="flex flx-row justify-between w-full">
                 <h1
-                    class="text-sm font-medium capitalize text-slate-700 dark:text-slate-200"
+                    class="text-base font-medium capitalize text-white dark:text-slate-200"
                 >
                   Nouvelle conversation
                 </h1>
@@ -159,7 +159,7 @@
               <div v-if="showNewMessageForm" class="flex w-full flex-col gap-y-2 rounded-lg px-3 py-2 bg-slate-300">
                 <form @submit.prevent="createNewConversation(newConversationName)">
                   <input v-model="newConversationName" type="text" placeholder="Nom de la conversation" class="border p-2 rounded w-full"/>
-                  <button type="submit" class="bg-blue-600 text-white p-2 rounded w-full">Créer</button>
+                  <button type="submit" class="bg-royal-purple/90 text-white p-2 rounded w-full">Créer</button>
                 </form>
               </div>
             </transition>
@@ -268,7 +268,7 @@ export default {
           userId = userInfo.id;
         } else {
           // Gérer le cas d'un visiteur
-          const visitorInfo = JSON.parse(localStorage.getItem('visitorInfo'));
+          const visitorInfo = JSON.parse(sessionStorage.getItem('visitorInfo'));
           visitorUuid = visitorInfo.uuid;
         }
 
@@ -348,10 +348,20 @@ export default {
 .menu-icon{
   color: black;
 }
+.border-colors {
+  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1 !important;
+  border: 2px solid;
+  border-radius: 0.5rem;
+}
 
+.border-colors::before {
+  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1 !important;
+}
 
-.border-colors-gradient {
-  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1;
+.border-colors-right {
+  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1 !important;
+  border-right: 2px solid;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .slide-fade-enter-active {

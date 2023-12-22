@@ -15,7 +15,9 @@ module.exports = {
         'soft-green': '#A8D5BA',
         'mustard-yellow': '#FFC857'
       },
-
+      backgroundImage: {
+        'border-gradient': "linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40)",
+      },
     },
   },
   plugins: [],
