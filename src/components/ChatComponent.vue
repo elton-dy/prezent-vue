@@ -18,7 +18,7 @@
       <div
           :class="[
           '',
-          message.type !== 'Human' ? 'flex rounded-b-xl rounded-tr-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl' : 'flex min-h-[85px] rounded-b-xl rounded-tl-xl bg-slate-50 p-4 dark:bg-slate-800 sm:min-h-0 sm:max-w-md md:max-w-2xl',
+          message.type !== 'Human' ? 'flex rounded-b-xl rounded-tr-xl bg-slate-50 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl' : 'flex min-h-[85px] rounded-b-xl rounded-tl-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:min-h-0 sm:max-w-md md:max-w-2xl',
         ]"
           class=""
       >
@@ -29,7 +29,7 @@
 
         <div v-else class="product-card-container ">
           <p>{{message.text}}</p>
-          <div class="product-card w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
+          <div class="product-card border-2 border-flame-orange/50 w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
             <div class="product-card-img-container flex">
               <img v-if="!product.image_url" class="product-card-img " src="../assets/gift-box.png">
               <img v-else class="product-card-img " :src="product.image_url">
@@ -39,7 +39,7 @@
               <p>{{ product.target_budget }}</p>
               <button
                   @click="openProductLink(product.link)"
-                  class="inline-flex items-center gap-x-2 rounded-lg bg-flame-orange px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-mustard-yellow focus:outline-none focus:ring focus:ring-blue-300"
+                  class="inline-flex items-center gap-x-2 rounded-lg mb-2 bg-flame-orange px-3 py-2 text-center text-sm font-medium text-slate-50 hover:bg-mustard-yellow focus:outline-none focus:ring focus:ring-blue-300"
               >
                 <a :href="product.link" target="_blank">Découvrir</a>
               </button>
@@ -57,7 +57,7 @@
           :src="aiAvatar"
           class="mr-2 h-8 w-8 rounded-full"
       />
-      <div class="flex rounded-b-xl rounded-tr-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl">
+      <div class="flex rounded-b-xl rounded-tr-xl bg-slate-50 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl">
         <div  class="loading-dots">
           <div class="dot"></div>
           <div class="dot"></div>
