@@ -55,11 +55,12 @@ export default {
       if (currentConversation.value) {
         currentConversation.value.messages.push(userMessage);
       }
-
+      const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid
       const messageData = {
         conversation: currentConversation.value.id,
         text: newMessage,
-        type: 'Human'
+        type: 'Human',
+        visitor_uuid: visitorUuid
       };
       console.log("messageData:", currentConversation);
       // Envoyer le nouveau message à l'API et attendre la réponse
