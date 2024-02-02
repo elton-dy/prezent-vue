@@ -249,7 +249,8 @@ export default {
     async function deleteConversation(conversationId) {
       try {
         // Supprimer la conversation via l'API
-        await apiClient.delete(`/conversations/${conversationId}`);
+        const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid;
+        await apiClient.delete(`/conversations/${conversationId}`,{params: {visitor_uuid: visitorUuid}});
         // Supprimer la conversation du store
         removeConversation(conversationId);
       } catch (error) {
