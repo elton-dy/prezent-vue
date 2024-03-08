@@ -1,39 +1,61 @@
 <template>
-  <div class="signup">
-    <h2>Inscription</h2>
+  <div class="signup flex flex-col items-center">
+    <h1 class="mt-2.5 mb-7">Créer un compte</h1>
 
-    <form @submit.prevent="register">
-      <div>
-        <label for="first_name">Prénom:</label>
-        <input v-model="user.first_name" type="text" id="first_name" required>
+    <form @submit.prevent="register" class="form px-8">
+
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="email">
+          Email
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.email" type="email" id="email" required placeholder="Adresse electronique">
+        <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
       </div>
+    </div>
 
-      <div>
-        <label for="last_name">Nom:</label>
-        <input v-model="user.last_name" type="text" id="last_name" required>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="password">
+          Mot de passe
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.password" type="password" id="password" required placeholder="Mot de passe">
+        <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
       </div>
+    </div>
 
-      <div>
-        <label for="username">Nom d'utilisateur:</label>
-        <input v-model="user.username" type="text" id="username" required>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="confirmPassword">
+          Confirmer le mot de passe
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.confirmPassword" id="confirmPassword" type="password" required placeholder="Confirmer le mot de passe">
+        <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
       </div>
+    </div>
 
-      <div>
-        <label for="email">Email:</label>
-        <input v-model="user.email" type="email" id="email" required>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="first_name">
+          Prénom
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.first_name" type="text" id="first_name" required placeholder="Prénom">
+        <p class="text-red-500 text-xs italic">Please fill out this field.</p>
       </div>
-
-      <div>
-        <label for="password">Mot de passe:</label>
-        <input v-model="user.password" type="password" id="password" required>
+      <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="last_name">
+          Nom
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.last_name" type="text" id="last_name" required placeholder="Nom">
       </div>
+    </div>
 
-      <div>
-        <label for="confirmPassword">Confirmer le mot de passe:</label>
-        <input type="password" v-model="user.confirmPassword" id="confirmPassword" required>
-      </div>
-
-      <button type="submit" >S'inscrire</button>
+    <div class="flex flex-col items-center">
+      <button type="submit"
+      class="flex text-white max-w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+        Continuer
+      </button>
+    </div>
 
       <div v-if="error" style="color: red">{{ error }}</div>
 
@@ -49,7 +71,6 @@ export default {
       user: {
         first_name: "",
         last_name: "",
-        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -73,3 +94,13 @@ export default {
   }
 };
 </script>
+
+<style>
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 54px;
+  letter-spacing: 0em;
+}
+</style>

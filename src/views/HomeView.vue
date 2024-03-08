@@ -1,25 +1,31 @@
 <template>
-  <div class="min-w-[300px] relative h-screen w-full home-main">
-    <div class="relative chat-wrapper flex h-screen flex-col">
-      <div class="flex items-center justify-center h-20">
-        <h1 class="max-w-screen-md"> <img src="../assets/baseline.png"></h1>
-      </div>
+  <div class="flex">
+    <header>
+      <SidebarsComponent></SidebarsComponent>
+    </header>
+    <div class="min-w-[300px] relative h-screen w-full home-main">
+      <div class="relative chat-wrapper flex h-screen flex-col">
+        <div class="flex items-center justify-center h-20">
+          <h1 class="max-w-screen-md"> <img src="../assets/baseline.png"></h1>
+        </div>
 
-      <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full"       id="style-3">
-        <chat-component
-          v-if="currentConversation"
-          :messages="currentConversation.messages"
-          :is-loading="isLoading">
-        >
-        </chat-component>
-      </div>
-      <div class="bg-slate-300 flex items-center justify-center">
-        <div class="w-full max-w-screen-md">
-          <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+        <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full"       id="style-3">
+          <chat-component
+            v-if="currentConversation"
+            :messages="currentConversation.messages"
+            :is-loading="isLoading">
+          >
+          </chat-component>
+        </div>
+        <div class="bg-slate-300 flex items-center justify-center">
+          <div class="w-full max-w-screen-md">
+            <MessageInputComponent @send="handleNewUserMessage"></MessageInputComponent>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 
 </template>
 
@@ -28,11 +34,12 @@ import apiClient from "../services/api";
 import ChatComponent from "../components/ChatComponent.vue";
 import {onMounted,onBeforeMount, ref,watch} from "vue";
 import MessageInputComponent from "../components/MessageInputComponent.vue";
+import SidebarsComponent from "../components/SidebarsComponent.vue"; 
 import {addConversation, conversations, getConversationById,currentConversationId} from "../stores/conversationsStore";
 
 export default {
   name: 'HomePage',
-  components: {MessageInputComponent, ChatComponent},
+  components: {MessageInputComponent, ChatComponent,SidebarsComponent},
   data() {
     return {
       // other data properties if needed

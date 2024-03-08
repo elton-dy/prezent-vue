@@ -29,7 +29,7 @@
 
         <div v-else class="product-card-container ">
           <p>{{message.text}}</p>
-          <div class="product-card border-2 border-flame-orange/50 w-64 flex flex-col bg-slate-100 rounded-lg overflow-hidden relative" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
+          <div class="product-card border-2 border-flame-orange/50 w-60 flex flex-col bg-slate-100 rounded-lg overflow-hidden relative" v-for="(product, productIndex) in message.product_details" :key="`product-${productIndex}`">
             <div class="absolute top-2 left-2">
               <button @click="toggleLike(productIndex)" class="text-flame-orange hover:text-mustard-yellow">
                 <!-- Vous pouvez utiliser une icône SVG ou une classe d'icônes (comme FontAwesome) ici -->
