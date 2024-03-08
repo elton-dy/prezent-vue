@@ -1,6 +1,9 @@
 <template>
   <div class="login">
     <div class="signup flex flex-col items-center">
+      <div class="w-screen px-8">
+        <router-link to="/" class="mt-4 text-xs text-green-800">&lt; retour</router-link>
+      </div>
       <h1 class="mt-2.5 mb-7">Connexion</h1>
       <form @submit.prevent="login" class="form flog px-8">
         <div class="flex flex-wrap -mx-3 mb-6 ">
@@ -9,7 +12,7 @@
               Email
             </label>
             <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.username" type="text" id="username" required placeholder="Adresse electronique">
-            <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+            <!-- <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> -->
           </div>
         </div>
 
@@ -19,15 +22,17 @@
               Mot de passe
             </label>
             <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.password" type="password" id="password" required placeholder="Mot de passe">
-            <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+            <!-- <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> -->
           </div>
         </div>
 
         <div class="flex flex-col items-center">
           <button type="submit"
-          class="flex text-white max-w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+          class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
           Se connecter
           </button>
+
+          <router-link to="/signup" class="mt-4 text-sm">Créer un compte</router-link>
         </div>
         
       </form>
@@ -56,7 +61,7 @@ export default {
         // Stockez le token dans un endroit sécurisé, par exemple dans un httpOnly cookie,
         // ou dans le localStorage si vous acceptez les risques associés.
         localStorage.setItem('token', token);
-        this.$router.push('/'); // Redirigez l'utilisateur vers la page d'accueil après une connexion réussie
+        this.$router.push('/home'); // Redirigez l'utilisateur vers la page d'accueil après une connexion réussie
       } catch (error) {
         console.error('Une erreur s\'est produite:', error);
         // Gérez l'erreur de manière appropriée ici, par exemple en affichant un message d'erreur
