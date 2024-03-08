@@ -6,13 +6,12 @@
           class="first-column flex h-screen w-12 flex-col items-center space-y-8 border-r border-slate-300 bg-slate-50 py-8 dark:border-slate-700 dark:bg-slate-900 sm:w-16"
       >
         <!-- Logo -->
-        <RouterLink
-            to="/"
+        <button
             class="mb-1"
             @click="toggleSecondColumn()"
         >
           <img :src="currentImageMenu" class="h-7 w-7 text-blue-600">
-        </RouterLink>
+        </button>
         <!-- List Gift -->
         <RouterLink
             to="/login"
