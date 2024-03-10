@@ -1,7 +1,10 @@
 <template>
     <div class="wap-welcome">
         <div class="image-container">
-            <img src="../assets/welcome.jpg" alt="" srcset="" class="wimage">
+            <video class="wimage" autoplay muted loop>
+                <source src="../assets/welcome.webm" type="video/webm">
+                Votre navigateur ne supporte pas la balise vidéo HTML5.
+            </video>
         </div>
         <div class="button-container flex flex-col items-center justify-center content-center">
             <h1 class="mb-4">Commencer</h1>

@@ -1,15 +1,24 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="flex">
+    <header>
+      <SidebarsComponent></SidebarsComponent>
+    </header>
+    <div class="about">
+      <h1 class="max-w-screen-md"> <img src="../assets/baseline.png"></h1>
+    </div>
   </div>
+
 </template>
 
+<script>
+import SidebarsComponent from "../components/SidebarsComponent.vue"; 
+
+export default {
+    name: "AboutPage",
+    components: {SidebarsComponent},
+};
+
+</script>
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
+
 </style>
