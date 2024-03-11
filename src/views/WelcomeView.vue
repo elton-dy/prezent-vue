@@ -11,14 +11,14 @@
             <div class="flex">
                 <div class="flex flex-col items-center mr-4">
                     <router-link to="/login"
-                        class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+                        class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
                         Se connecter
                     </router-link>
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <router-link to="/home" type="submit"
-                    class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+                    <router-link to="/about" type="submit"
+                    class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
                     Inviter
                     </router-link>
                 </div>

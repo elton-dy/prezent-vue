@@ -56,7 +56,7 @@
 
     <div class="flex flex-col items-center">
       <button type="submit"
-      class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+      class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
       Connexion
       </button>
       <router-link to="/login" class="mt-4 text-sm">J'ai déjà un compte</router-link>

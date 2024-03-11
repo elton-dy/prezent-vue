@@ -8,11 +8,11 @@
       <form @submit.prevent="login" class="form flog px-8">
         <div class="flex flex-wrap -mx-3 mb-6 ">
           <div class="w-full px-3 ">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="username">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="email">
               Email
             </label>
-            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.username" type="text" id="username"  placeholder="Adresse electronique">
-            <p v-if="errors.username" class="text-red-500 text-xs italic">{{ errors.username }}</p>
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-black" v-model="user.email" type="text" id="email"  placeholder="Adresse electronique">
+            <p v-if="errors.email" class="text-red-500 text-xs italic">{{ errors.email }}</p>
           </div>
         </div>
 
@@ -28,7 +28,7 @@
 
         <div class="flex flex-col items-center">
           <button type="submit"
-          class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+          class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
           Se connecter
           </button>
 
@@ -48,11 +48,11 @@ export default {
   data() {
     return {
       user: {
-        username: '',
+        email: '',
         password: ''
       },
       errors: {
-        username: '',
+        email: '',
         password: '',
       },
     };
@@ -61,8 +61,8 @@ export default {
     async login() {
       this.resetErrors();
 
-      if (!this.user.username) {
-        this.errors.username = "Veuillez entrer une adresse e-mail.";
+      if (!this.user.email) {
+        this.errors.email = "Veuillez entrer une adresse e-mail.";
       }
 
       if (!this.user.password) {
@@ -73,7 +73,8 @@ export default {
         try {
           const response = await apiClient.post('/token/', this.user);
           const token = response.data.access;
-          localStorage.setItem('token', token);
+          sessionStorage.setItem('token', token);
+          console.log(response)
           this.$router.push('/home');
         } catch (error) {
           console.error('Une erreur s\'est produite:', error);
