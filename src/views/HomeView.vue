@@ -95,6 +95,19 @@ export default {
     async function loadOrCreateConversation() {
       if (conversations.value.length > 0) {
         currentConversationId.value = conversations.value[conversations.value.length - 1].id;
+      } 
+      
+      if (sessionStorage.getItem('user')) {
+        try {
+          const userId = JSON.parse(sessionStorage.getItem('user')).id;
+          console.log(`Bearer ${sessionStorage.getItem('token')}`)
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+          const response = await apiClient.post('/conversations/', { user: userId ,name: 'Bienvenue' });
+          addConversation(response.data); // Mise à jour du store global
+          currentConversationId.value = response.data.id;
+        } catch (error) {
+          console.error('Error starting a new conversation:', error);
+        }
       } else {
         try {
           const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid;
@@ -110,7 +123,7 @@ export default {
       currentConversation.value = getConversationById(currentConversationId.value);
     }
     const checkVisitor = async () => {
-      const isConnected = !!sessionStorage.getItem('accessToken');
+      const isConnected = !!sessionStorage.getItem('user');
       if (!isConnected && !sessionStorage.getItem('visitorInfo')) {
         await createVisitor();
       }

@@ -43,6 +43,8 @@
 
 <script>
 import apiClient from "../services/api";
+import { RouterLink } from 'vue-router';
+
 
 export default {
   data() {
@@ -74,7 +76,7 @@ export default {
           const response = await apiClient.post('/token/', this.user);
           const token = response.data.access;
           sessionStorage.setItem('token', token);
-          console.log(response)
+          sessionStorage.setItem('user', JSON.stringify(response.data.user));
           this.$router.push('/home');
         } catch (error) {
           console.error('Une erreur s\'est produite:', error);
