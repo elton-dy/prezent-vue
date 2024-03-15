@@ -12,49 +12,33 @@
         >
           <img :src="currentImageMenu" class="h-7 w-7 text-blue-600">
         </button>
-        <!-- List Gift -->
+        <!-- chat -->
         <RouterLink
-            to="/login"
+            to="/home"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'gift' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
-            v-if="showIcon"
-            @click="selectItem('gift')"
+            v-if="true"
+            @click="selectItem('home')"
         >
-          <img src="../assets/gift.svg" class="h-6 w-6">
+          <img src="../assets/forum.svg" class="h-6 w-6">
         </RouterLink>
-        <!-- Favori -->
+        <!-- newspaper -->
         <RouterLink
-            to="#"
+            to="/articles"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'favori' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
-            v-if="showIcon"
-            @click="selectItem('favori')"
+            v-if="true"
+            @click="selectItem('newspaper')"
         >
-          <img src="../assets/heart.svg" class="menu-icon h-6 w-6">
+          <img src="../assets/newspaper.svg" class="menu-icon h-6 w-6">
         </RouterLink>
 
-        <!-- User -->
+        <!-- about -->
         <RouterLink
-            to="#"
+            to="/about"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'user' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
-            v-if="showIcon"
-            @click="selectItem('user')"
+            v-if="true"
+            @click="selectItem('about')"
         >
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="menu-icon h-6 w-6"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-            <path
-                d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"
-            ></path>
-          </svg>
+        <img src="../assets/info.svg" class="h-6 w-6">
         </RouterLink>
         <!-- Settings -->
         <RouterLink

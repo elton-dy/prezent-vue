@@ -9,7 +9,12 @@
       </div>
 
       <div class="articles-wrap flex flex-wrap overflow-y-scroll">
-        <article class="mx-auto mb-4 text-balance w-[310px] h-[520px]" v-for="article in articles" :key="article.id">
+        <router-link
+          v-for="article in articles"
+          :key="article.id"
+          :to="{ name: 'Article', params: { id: article.id } }"
+          class="mx-auto mb-4 text-balance w-[310px] h-[520px]"
+        >
           <img class="w-[310px] h-[250px] object-cover" src="https://img.freepik.com/photos-gratuite/concept-transformation-numerique-fond-puce-technologie-ia_53876-124669.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1710288000&semt=sph" >
           <div class="flex flex-col h-[270px] justify-evenly">
             <h2 class="tilte-article">{{ article.title }}</h2>
@@ -17,25 +22,7 @@
             <p>{{ getTruncatedText(article.content,300) }}</p>
             <p>Auteur : {{ article.author }}</p>
           </div>
-        </article>
-        <article class="mx-auto mb-4 text-balance w-[310px] h-[520px]" v-for="article in articles" :key="article.id">
-          <img class="w-[310px] h-[250px] object-cover" src="https://img.freepik.com/photos-gratuite/concept-transformation-numerique-fond-puce-technologie-ia_53876-124669.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1710288000&semt=sph" >
-          <div class="flex flex-col h-[270px] justify-evenly">
-            <h2 class="tilte-article">{{ article.title }}</h2>
-            <!-- <p>{{ article.subtitle }}</p> -->
-            <p>{{ getTruncatedText(article.content,300) }}</p>
-            <p>Auteur : {{ article.author }}</p>
-          </div>
-        </article>
-        <article class="mx-auto mb-4 text-balance w-[310px] h-[520px]" v-for="article in articles" :key="article.id">
-          <img class="w-[310px] h-[250px] object-cover" src="https://img.freepik.com/photos-gratuite/concept-transformation-numerique-fond-puce-technologie-ia_53876-124669.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1710288000&semt=sph" >
-          <div class="flex flex-col h-[270px] justify-evenly">
-            <h2 class="tilte-article">{{ article.title }}</h2>
-            <!-- <p>{{ article.subtitle }}</p> -->
-            <p>{{ getTruncatedText(article.content,300) }}</p>
-            <p>Auteur : {{ article.author }}</p>
-          </div>
-        </article>
+        </router-link>
       </div>
 
     </div>
@@ -45,6 +32,7 @@
 <script>
 import SidebarsComponent from "../components/SidebarsComponent.vue";
 import apiClient from "../services/api";
+import { RouterLink } from "vue-router";
 
 export default {
   name: "ArticlesPage",
