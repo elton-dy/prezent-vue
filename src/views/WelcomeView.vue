@@ -1,21 +1,24 @@
 <template>
     <div class="wap-welcome">
         <div class="image-container">
-            <img src="../assets/welcome.jpg" alt="" srcset="" class="wimage">
+            <video class="wimage" autoplay muted loop>
+                <source src="../assets/welcome.webm" type="video/webm">
+                Votre navigateur ne supporte pas la balise vidéo HTML5.
+            </video>
         </div>
         <div class="button-container flex flex-col items-center justify-center content-center">
             <h1 class="mb-4">Commencer</h1>
             <div class="flex">
                 <div class="flex flex-col items-center mr-4">
                     <router-link to="/login"
-                        class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+                        class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
                         Se connecter
                     </router-link>
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <router-link to="/home" type="submit"
-                    class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-lg px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+                    <router-link to="/about" type="submit"
+                    class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
                     Inviter
                     </router-link>
                 </div>
