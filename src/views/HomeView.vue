@@ -95,9 +95,7 @@ export default {
     async function loadOrCreateConversation() {
       if (conversations.value.length > 0) {
         currentConversationId.value = conversations.value[conversations.value.length - 1].id;
-      } 
-      
-      if (sessionStorage.getItem('user')) {
+      } else if (sessionStorage.getItem('user')) {
         try {
           const userId = JSON.parse(sessionStorage.getItem('user')).id;
           console.log(`Bearer ${sessionStorage.getItem('token')}`)

@@ -4,7 +4,7 @@
       <SidebarsComponent></SidebarsComponent>
     </header>
     <div class="article-container flex flex-col items-center">
-      <div class="flex justify-center mb-4">
+      <div class="flex justify-center mb-4 mt-8">
         <h1 class="max-w-4xl">{{ article.title }}</h1>
       </div>
       <div class="flex flex-col max-w-4xl px-4 pb-2">
