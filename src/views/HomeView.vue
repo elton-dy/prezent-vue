@@ -6,7 +6,7 @@
     <div class="min-w-[300px] relative h-screen w-full home-main">
       <div class="relative chat-wrapper flex h-screen flex-col">
         <div class="flex items-center justify-center h-20">
-          <h1 class="max-w-screen-md"> <img src="../assets/baseline.png"></h1>
+          
         </div>
 
         <div class="flex-1 overflow-y-auto max-w-screen-md mr-auto ml-auto w-full"       id="style-3">
@@ -36,6 +36,8 @@ import {onMounted,onBeforeMount, ref,watch} from "vue";
 import MessageInputComponent from "../components/MessageInputComponent.vue";
 import SidebarsComponent from "../components/SidebarsComponent.vue"; 
 import {addConversation, conversations, getConversationById,currentConversationId} from "../stores/conversationsStore";
+import { jwtDecode } from "jwt-decode";
+
 
 export default {
   name: 'HomePage',
@@ -58,20 +60,38 @@ export default {
         type: 'Human',
         timestamp: new Date().toISOString(),
       };
-
+      let messageData = {}
       if (currentConversation.value) {
         currentConversation.value.messages.push(userMessage);
       }
-      const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid
-      const messageData = {
-        conversation: currentConversation.value.id,
-        text: newMessage,
-        type: 'Human',
-        visitor_uuid: visitorUuid
-      };
+
+      if (sessionStorage.getItem('token')) {
+        const token = sessionStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.user_id;
+        messageData = {
+          conversation: currentConversation.value.id,
+          text: newMessage,
+          type: 'Human',
+          user: userId
+        }
+        
+      } else {
+        const visitorUuid = JSON.parse(sessionStorage.getItem('visitorInfo')).uuid
+        messageData = {
+          conversation: currentConversation.value.id,
+          text: newMessage,
+          type: 'Human',
+          visitor_uuid: visitorUuid
+        }
+      }
+      
       console.log("messageData:", currentConversation);
       // Envoyer le nouveau message à l'API et attendre la réponse
       try {
+        if (sessionStorage.getItem('token')) {
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+        }
         const response = await apiClient.post('/messages/', messageData);
         // Mettre à jour la conversation avec la réponse de l'API
 
@@ -95,9 +115,13 @@ export default {
     async function loadOrCreateConversation() {
       if (conversations.value.length > 0) {
         currentConversationId.value = conversations.value[conversations.value.length - 1].id;
-      } else if (sessionStorage.getItem('user')) {
+      } else if (sessionStorage.getItem('token')) {
+        console.log('token:', sessionStorage.getItem('token'));
         try {
-          const userId = JSON.parse(sessionStorage.getItem('user')).id;
+          const token = sessionStorage.getItem('token');
+          const decodedToken = jwtDecode(token);
+          console.log('decodedToken:', decodedToken);
+          const userId = decodedToken.user_id;
           console.log(`Bearer ${sessionStorage.getItem('token')}`)
           apiClient.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
           const response = await apiClient.post('/conversations/', { user: userId ,name: 'Bienvenue' });

@@ -7,7 +7,8 @@
             </video>
         </div>
         <div class="button-container flex flex-col items-center justify-center content-center">
-            <h1 class="mb-4">Commencer</h1>
+            <!-- <h1 class="mb-4 ">Commencer</h1> -->
+            <h1 class="mb-4 "></h1>
             <div class="flex">
                 <div class="flex flex-col items-center mr-4 hidden">
                     <router-link to="/login"
@@ -17,10 +18,10 @@
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <router-link to="/about" type="submit"
-                    class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
-                    Inviter
-                    </router-link>
+                    <button @click.native="goToAboutPage" type="submit"
+                        class="flex items-center justify-center text-white w-40 flex-col gap-y-2 rounded-full px-3 py-2 text-left bg-royal-purple/80 transition-colors duration-200 hover:bg-royal-purple focus:outline-none dark:hover:bg-slate-800" >
+                        Commencer
+                    </button>
                 </div>
             </div>
 
@@ -34,6 +35,16 @@ import { RouterLink } from "vue-router";
 
 export default {
     name: "WelcomePage",
+    methods: {
+    goToAboutPage() {
+      if (localStorage.getItem('visitedAboutPage')) {
+        this.$router.push('/home');
+      } else {
+        localStorage.setItem('visitedAboutPage', true);
+        this.$router.push('/about');
+      }
+    }
+  }
 };
 </script>
   

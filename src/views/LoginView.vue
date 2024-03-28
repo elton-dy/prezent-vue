@@ -43,7 +43,6 @@
 
 <script>
 import apiClient from "../services/api";
-import { RouterLink } from 'vue-router';
 
 
 export default {

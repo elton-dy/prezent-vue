@@ -17,10 +17,9 @@
         >
           <img class="w-[310px] h-[250px] object-cover" src="https://img.freepik.com/photos-gratuite/concept-transformation-numerique-fond-puce-technologie-ia_53876-124669.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1710288000&semt=sph" >
           <div class="flex flex-col h-[270px] justify-evenly">
-            <h2 class="tilte-article">{{ article.title }}</h2>
+            <h2 class="tilte-article mt-8">{{ article.title }}</h2>
             <!-- <p>{{ article.subtitle }}</p> -->
-            <p>{{ getTruncatedText(article.content,300) }}</p>
-            <p>Auteur : {{ article.author }}</p>
+            <p >{{ getTruncatedText(article.content,300) }}</p>
           </div>
         </router-link>
       </div>
@@ -56,16 +55,19 @@ export default {
       }
     },
     getTruncatedText(text, maxLength) {
-      if (text.length <= maxLength) {
-        return text;
-      }
-      const truncatedText = text.substring(0, maxLength);
-      const lastSpaceIndex = truncatedText.lastIndexOf(' ');
-      const truncatedTextWithEllipsis = lastSpaceIndex !== -1
-        ? truncatedText.substring(0, lastSpaceIndex) + '...'
-        : truncatedText + '...';
-      return truncatedTextWithEllipsis;
-    }
+  // Supprimer les balises HTML
+  const textWithoutHtml = text.replace(/<p>/g, '').replace(/<\/p>/g, '').replace(/<h2>/g, '').replace(/<\/h2>/g, '').replace(/<h3>/g, '').replace(/<\/h3>/g, '');
+
+  if (textWithoutHtml.length <= maxLength) {
+    return textWithoutHtml;
+  }
+  const truncatedText = textWithoutHtml.substring(0, maxLength);
+  const lastSpaceIndex = truncatedText.lastIndexOf(' ');
+  const truncatedTextWithEllipsis = lastSpaceIndex !== -1
+    ? truncatedText.substring(0, lastSpaceIndex) + '...'
+    : truncatedText + '...';
+  return truncatedTextWithEllipsis;
+}
   },
 };
 </script>
