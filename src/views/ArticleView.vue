@@ -10,6 +10,7 @@
       <div class="flex flex-col max-w-4xl px-4 pb-2">
         <h2 class="mb-10">{{ article.subtitle }}</h2>
         <div v-html="article.content"></div>
+        
         <p class="my-2 text-wrap">Auteur : {{ article.author }}</p>
       </div>
       <div class="flex flex-col mt-10">
@@ -66,5 +67,16 @@ export default {
     font-weight: 600;
     line-height: 45px;
     letter-spacing: 0em;
+  }
+
+  h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 45px;
+    letter-spacing: 0em;
+    margin-top: 10px;
+    margin-bottom: 5px;
+
   }
 </style>

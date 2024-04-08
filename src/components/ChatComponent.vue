@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex-1 space-y-6 overflow-y-auto rounded-xl bg-slate-200 p-4 text-sm leading-6 text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-300 sm:text-base sm:leading-7"
+      class="flex-1 space-y-6 overflow-y-auto rounded-xl  p-4 text-sm leading-6 text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-300 sm:text-base sm:leading-7"
   >
     <div
         v-for="(message, index) in messages"
@@ -18,7 +18,7 @@
       <div
           :class="[
           '',
-          message.type !== 'Human' ? 'flex rounded-b-xl rounded-tr-xl bg-slate-50 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl' : 'flex min-h-[85px] rounded-b-xl rounded-tl-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:min-h-0 sm:max-w-md md:max-w-2xl',
+          message.type !== 'Human' ? 'flex rounded-b-xl rounded-tr-xl bg-slate-50 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl border-colors-message' : 'flex min-h-[85px] rounded-b-xl rounded-tl-xl bg-royal-purple/20 p-4 dark:bg-slate-800 sm:min-h-0 sm:max-w-md md:max-w-2xl border-colors-message',
         ]"
           class=""
       >
@@ -183,5 +183,12 @@ export default {
 
 .dot:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+.border-colors-message {
+  border-image: linear-gradient(45deg, #5E17EB, #FF6E40, #5E17EB, #FF6E40) 1 !important;
+  border: 2px solid;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 </style>

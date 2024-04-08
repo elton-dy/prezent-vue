@@ -5,7 +5,7 @@ WORKDIR /app
 # Copier les fichiers de package et installer les dépendances
 COPY package*.json ./
 RUN npm install
-
+RUN npm install jwt-decode
 # Copier le reste du code source de l'application
 COPY . .
 
