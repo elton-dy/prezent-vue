@@ -1,7 +1,7 @@
 <template>
     <div class="signup flex flex-col items-center">
       <div class="w-screen px-8">
-        <router-link to="/" class="mt-4 text-xs text-green-800">&lt; retour</router-link>
+        <router-link to="/" class="mt-4 text-sm text-green-800">&lt; retour</router-link>
       </div>
       <h1 class="mt-2.5 mb-7">Réinitialiser le mot de passe</h1>
   
@@ -38,6 +38,13 @@
   
       </form>
     </div>
+
+    <div v-if="showSuccessPopup" class="fixed inset-0 flex items-center justify-center z-50 mt-10">
+      <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-lg text-green-700 font-bold mb-4">Mot de passe réinitialisé avec succès</h2>
+        <p>Vous allez être redirigé vers la page de connexion.</p>
+      </div>
+    </div>
   </template>
   
   <script>
@@ -62,7 +69,8 @@
           password: '',
           confirmPassword: '',
         },
-        error: ''
+        error: '',
+        showSuccessPopup: false,
       };
     },
     methods: {
@@ -76,7 +84,10 @@
             const response = await apiClient.post(`/password-reset-confirm/${this.token}/`, {
               new_password: this.user.password,
             });
-            console.log("Mot de passe réinitialisé avec succès!", response.data);
+            this.showSuccessPopup = true;
+            setTimeout(() => {
+              this.$router.push('/login');
+            }, 2500);
           } catch (error) {
             if (error.response && error.response.data.error) {
               this.error = error.response.data.error;

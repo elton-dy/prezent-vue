@@ -1,7 +1,7 @@
 <template>
     <div class="signup flex flex-col items-center">
       <div class="w-screen px-8">
-        <router-link to="/" class="mt-4 text-xs text-green-800">&lt; retour</router-link>
+        <router-link to="/" class="mt-4 text-sm text-green-800">&lt; retour</router-link>
       </div>
       <h1 class="mt-2.5 mb-7">Réinitialiser le mot de passe</h1>
   
@@ -39,7 +39,8 @@
         errors: {
           email: '',
         },
-        error: ''
+        error: '',
+        showSuccessPopup: true,
       };
     },
     methods: {
@@ -52,6 +53,10 @@
           try {
             const response = await apiClient.post('/password_reset/', { email: this.email });
             console.log("Utilisateur enregistré avec succès!", response.data);
+            this.showSuccessPopup = true;
+            setTimeout(() => {
+              this.$router.push('/login');
+            }, 2500);
           } catch (error) {
             console.error("Il y a eu une erreur lors de l'enregistrement:", error);
           }
