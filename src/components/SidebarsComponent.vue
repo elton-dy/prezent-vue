@@ -42,27 +42,12 @@
         </RouterLink>
         <!-- Settings -->
         <RouterLink
-            to="#"
+            to="/account"
             :class="['rounded-lg p-1.5 transition-colors duration-200 hover:bg-slate-200 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800', selectedItem === 'parameter' ? 'bg-blue-100 text-blue-600 dark:bg-slate-800' : 'text-slate-500']"
-            v-if="showIcon"
-            @click="selectItem('parameter')"
+            v-if="true"
+            @click="selectItem('account')"
         >
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="menu-icon h-6 w-6"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path
-                d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z"
-            ></path>
-            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-          </svg>
+        <img src="../assets/account.svg" class="h-6 w-6">
         </RouterLink>
       </div>
       <!-- Second Column -->

@@ -1,7 +1,7 @@
 <template>
     <div class="signup flex flex-col items-center">
       <div class="w-screen px-8">
-        <router-link to="/" class="mt-4 text-xs text-green-800">&lt; retour</router-link>
+        <router-link to="/" class="mt-4 text-sm text-green-800">&lt; retour</router-link>
       </div>
       <h1 class="mt-2.5 mb-7">Réinitialiser le mot de passe</h1>
   
@@ -39,7 +39,7 @@
         errors: {
           email: '',
         },
-        error: ''
+        error: '',
       };
     },
     methods: {
