@@ -40,7 +40,6 @@
           email: '',
         },
         error: '',
-        showSuccessPopup: true,
       };
     },
     methods: {
@@ -53,10 +52,6 @@
           try {
             const response = await apiClient.post('/password_reset/', { email: this.email });
             console.log("Utilisateur enregistré avec succès!", response.data);
-            this.showSuccessPopup = true;
-            setTimeout(() => {
-              this.$router.push('/login');
-            }, 2500);
           } catch (error) {
             console.error("Il y a eu une erreur lors de l'enregistrement:", error);
           }

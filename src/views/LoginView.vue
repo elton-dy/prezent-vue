@@ -32,7 +32,7 @@
           Se connecter
           </button>
 
-          <div>
+          <div class="mt-2">
             <router-link to="/password" class="mt-4 text-sm text-rose-800 mr-2">Mot de passe oublié ?</router-link>
             <router-link to="/signup" class="mt-4 text-sm">Créer un compte</router-link>
           </div>
