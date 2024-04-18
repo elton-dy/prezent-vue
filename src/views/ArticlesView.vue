@@ -8,7 +8,7 @@
         <h1 class="max-w-screen-md"> Actualité</h1>
       </div>
 
-      <div class="articles-wrap flex flex-wrap overflow-y-scroll">
+      <div class="articles-wrap flex flex-wrap overflow-y-scroll" id="style-3">
         <router-link
           v-for="article in articles"
           :key="article.id"
@@ -92,5 +92,29 @@ export default {
   letter-spacing: 0em;
   padding-bottom: 5px;
   padding-top: 5px;
+}
+
+#style-3::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+#style-3::-webkit-scrollbar
+{
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+  left bottom,
+  left top,
+  color-stop(0.44, rgb(122,153,217)),
+  color-stop(0.72, rgb(73,125,189)),
+  color-stop(0.86, rgb(28,58,148)));
 }
 </style>
