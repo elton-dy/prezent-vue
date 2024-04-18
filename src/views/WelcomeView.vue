@@ -7,7 +7,8 @@
             </video>
         </div>
         <div class="button-container flex flex-col items-center justify-center content-center">
-            <h1 class="mb-4 ">Commencer</h1>
+            <img src="../assets/logo-prezent.png" class="logo-prezent-welcome">
+            <p class="para-container my-2 text-wrap">Bienvenue sur <span class="text-flame-orange">Prézent</span>, la solution IA pour trouver rapidement et facilement des idées de cadeaux adaptées à vos proches et à toutes les occasions. Ne laissez plus le choix d'un cadeau devenir un casse-tête ! </p>
             <div class="flex">
                 <div class="flex flex-col items-center mr-4">
                     <router-link to="/login"
@@ -23,6 +24,7 @@
                     </button>
                 </div>
             </div>
+            <p class="mt-8 text-royal-purple"> <router-link to="/signup" class="mt-4 text-sm">Créer un compte</router-link></p>
 
         </div>
   
@@ -48,6 +50,17 @@ export default {
 </script>
   
 <style>
+  .logo-prezent-welcome{
+    width: 457px;
+    height: 106px;
+    margin-bottom: 50px;
+    /* object-fit: cover; */
+  }
+  .para-container {
+    max-width: 457px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
   .wap-welcome{
     display: flex;
   }
@@ -101,6 +114,15 @@ export default {
             height: 50vh;
             width: 100%;
         }
-    
+        .logo-prezent-welcome{
+            width: 319px;
+            height: 76px;
+            margin-bottom: 20px;
+            /* object-fit: cover; */
+        }
+        .para-container {
+            max-width: 319px;
+            text-align: center;
+        }
     }
 </style>
