@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleSendMessage">
-    <label for="chat-input" class="sr-only">Enter your prompt</label>
+    <label for="chat-input" class="sr-only">Décrivez la personne et l'occasion du cadeau</label>
     <div class="relative">
     <textarea
         id="chat-input"
