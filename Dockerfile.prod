@@ -1,3 +1,4 @@
+# Étape 1: Build de l'application Vue.js
 FROM node:20 as build-stage
 
 WORKDIR /app
@@ -6,20 +7,24 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 RUN npm install jwt-decode
+
 # Copier le reste du code source de l'application
 COPY . .
 
 # Construire l'application
 RUN npm run build
 
-# Étape 2: Configurer le serveur web Nginx pour servir l'application construite
-FROM nginx:stable-alpine as production-stage
+# Étape 2: Utiliser un serveur HTTP léger pour servir les fichiers
+FROM node:20 as production-stage
 
-# Copier les fichiers statiques de build-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# Installer un serveur HTTP léger (serve)
+RUN npm install -g serve
+
+# Copier les fichiers statiques de la phase de build
+COPY --from=build-stage /app/dist /app
 
 # Exposer le port 80
 EXPOSE 80
 
-# Lancer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Lancer le serveur pour servir l'application
+CMD ["serve", "-s", "app", "-l", "80"]
